@@ -9,9 +9,36 @@ export const createJob = asyncHandler(async (req: Request, res: Response) => {
   res.status(StatusCodes.CREATED).json(job);
 });
 
-export const listJobs = asyncHandler(async (_req: Request, res: Response) => {
-  const jobs = await Job.find().sort({ createdAt: -1 });
-  res.json(jobs);
+export const listJobs = asyncHandler(async (req: Request, res: Response) => {
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const limit = Math.min(100, Math.max(1, Number(req.query.limit) || 20));
+  const search = (req.query.search as string | undefined)?.trim();
+
+  const filter = search
+    ? {
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { summary: { $regex: search, $options: "i" } },
+          { "requirements.skills": { $regex: search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const total = await Job.countDocuments(filter);
+  const jobs = await Job.find(filter)
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  res.json({
+    data: jobs,
+    meta: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit) || 1,
+    },
+  });
 });
 
 export const getJob = asyncHandler(async (req: Request, res: Response) => {
