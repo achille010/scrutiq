@@ -1,0 +1,21 @@
+{
+  "name": "umurava-2026",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/albert-ei-u/umurava-project-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/albert-ei-u/umurava-project-/issues"
+  },
+  "homepage": "https://github.com/albert-ei-u/umurava-project-#readme"
+}
