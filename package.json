@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "npm run migrate --prefix server"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/albert-ei-u/umurava-project-/issues"
   },
-  "homepage": "https://github.com/albert-ei-u/umurava-project-#readme"
+  "homepage": "https://github.com/albert-ei-u/umurava-project-#readme",
+  "dependencies": {
+    "lucide-react": "^1.7.0"
+  }
 }

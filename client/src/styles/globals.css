@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --color-aurora-blue: #2C7BE5;
+  --color-aurora-dark: #344050;
+  --color-aurora-muted: #5E6E82;
+  --color-aurora-border: #E3EBF6;
+  --color-aurora-bg: #F9FAFD;
+  --color-aurora-surface: #FFFFFF;
+  
+  /* Primary font */
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+}
+
+@layer base {
+  html {
+    font-size: 16px; /* Base font size slightly larger */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-jakarta bg-aurora-bg text-aurora-muted antialiased text-[15px] leading-relaxed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-jakarta font-black tracking-tighter text-aurora-dark;
+  }
+
+  /* Aurora Hover Presets */
+  .hover-lift {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-aurora-blue/10 active:scale-[0.98];
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-aurora-blue hover:bg-aurora-blue/90 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-all shadow-sm active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-aurora-surface border border-aurora-border hover:bg-aurora-bg text-aurora-dark px-5 py-2.5 rounded-lg font-bold text-sm transition-all;
+  }
+
+  .admin-card {
+    @apply bg-aurora-surface border border-aurora-border rounded-xl overflow-hidden transition-all;
+    /* Aurora uses borders over shadows for that clean 'Flat' feeling */
+  }
+
+  .status-pill {
+    @apply px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-colors;
+  }
+
+  .form-input {
+    @apply w-full bg-aurora-surface border border-aurora-border rounded-lg py-2.5 px-4 text-sm focus:border-aurora-blue focus:ring-4 focus:ring-aurora-blue/10 outline-none transition-all placeholder:text-aurora-muted/50;
+  }
+}
+
+/* Custom Scrollbar for professional UI */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
