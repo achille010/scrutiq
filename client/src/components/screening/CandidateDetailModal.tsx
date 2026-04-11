@@ -57,7 +57,7 @@ const CandidateDetailModal = ({
                       <ShieldCheck className="size-3" />
                       Screened
                     </span>
-                    <span className="text-[10px] font-bold text-scrutiq-muted uppercase tracking-widest px-2.5 py-1 bg-white border border-scrutiq-border rounded-lg">
+                    <span className="text-[10px] font-bold text-scrutiq-muted uppercase tracking-widest px-2.5 py-1 bg-scrutiq-surface border border-scrutiq-border rounded-lg">
                       ID: {result.candidateId}
                     </span>
                   </div>
@@ -65,7 +65,7 @@ const CandidateDetailModal = ({
               </div>
               <button
                 onClick={onClose}
-                className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-white rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
+                className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-scrutiq-surface rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
               >
                 <X className="size-5" />
               </button>
@@ -105,7 +105,7 @@ const CandidateDetailModal = ({
                     Summary
                   </h3>
                 </div>
-                <div className="bg-white border border-scrutiq-border/50 p-6 rounded-2xl">
+                <div className="bg-scrutiq-surface border border-scrutiq-border/50 p-6 rounded-2xl">
                   <p className="text-sm font-medium text-scrutiq-muted leading-relaxed italic">
                     {result.reasoning}
                   </p>

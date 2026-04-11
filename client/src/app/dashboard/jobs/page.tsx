@@ -89,7 +89,7 @@ const JobsPage = () => {
 
     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 px-1">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-          <div className="relative group flex items-center bg-white border border-scrutiq-border rounded-xl px-4 py-2.5 w-full sm:w-80 focus-within:border-scrutiq-blue focus-within:ring-4 focus-within:ring-scrutiq-blue/5 transition-all">
+          <div className="relative group flex items-center bg-scrutiq-surface border border-scrutiq-border rounded-xl px-4 py-2.5 w-full sm:w-80 focus-within:border-scrutiq-blue focus-within:ring-4 focus-within:ring-scrutiq-blue/5 transition-all">
             <Search className="size-4 text-scrutiq-muted group-focus-within:text-scrutiq-blue" />
             <input
               type="text"
@@ -109,7 +109,7 @@ const JobsPage = () => {
                     : "none",
               )
             }
-            className={`p-2.5 border rounded-xl transition-all flex items-center gap-2 text-[10px] font-bold tracking-widest ${sortOrder !== "none" ? "bg-scrutiq-blue text-white border-scrutiq-blue" : "bg-white border-scrutiq-border text-scrutiq-muted hover:bg-scrutiq-bg"}`}
+            className={`p-2.5 border rounded-xl transition-all flex items-center gap-2 text-[10px] font-bold tracking-widest ${sortOrder !== "none" ? "bg-scrutiq-blue text-white border-scrutiq-blue" : "bg-scrutiq-surface border-scrutiq-border text-scrutiq-muted hover:bg-scrutiq-bg"}`}
           >
             <Filter className="size-4" />
             <span>
@@ -126,13 +126,13 @@ const JobsPage = () => {
         <div className="flex items-center gap-2 p-1 bg-scrutiq-bg border border-scrutiq-border rounded-xl">
           <button
             onClick={() => setViewMode("grid")}
-            className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-white text-scrutiq-blue shadow-sm border border-scrutiq-border/50" : "text-scrutiq-muted hover:text-scrutiq-dark"}`}
+            className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-scrutiq-surface text-scrutiq-blue shadow-sm border border-scrutiq-border/50" : "text-scrutiq-muted hover:text-scrutiq-dark"}`}
           >
             <LayoutGrid className="size-4" />
           </button>
           <button
             onClick={() => setViewMode("list")}
-            className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-white text-scrutiq-blue shadow-sm border border-scrutiq-border/50" : "text-scrutiq-muted hover:text-scrutiq-dark"}`}
+            className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-scrutiq-surface text-scrutiq-blue shadow-sm border border-scrutiq-border/50" : "text-scrutiq-muted hover:text-scrutiq-dark"}`}
           >
             <List className="size-4" />
           </button>
@@ -164,7 +164,7 @@ const JobsPage = () => {
             setEditingJob(null);
             setIsModalOpen(true);
           }}
-          className="border-2 border-dashed border-scrutiq-border rounded-2xl p-8 flex flex-col items-center justify-center gap-4 hover:border-scrutiq-blue hover:bg-white transition-all group min-h-[300px]"
+          className="border-2 border-dashed border-scrutiq-border rounded-2xl p-8 flex flex-col items-center justify-center gap-4 hover:border-scrutiq-blue hover:bg-scrutiq-surface transition-all group min-h-[300px]"
         >
           <div className="size-12 rounded-xl bg-scrutiq-bg flex items-center justify-center group-hover:bg-scrutiq-blue transition-all">
             <Plus className="size-6 text-scrutiq-border group-hover:text-white transition-all" />

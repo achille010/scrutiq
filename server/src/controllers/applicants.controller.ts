@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import applicantsService from "../services/applicants.service";
+
+import User from "../models/User.model";
+
 
 class ApplicantsController {
   /**
@@ -120,7 +124,23 @@ class ApplicantsController {
 
       const emailService = (await import("../services/email.service")).default;
       const targetEmail = recipientEmail || applicant.email;
-      await emailService.sendCustomEmail(targetEmail, subject, message);
+
+      // Extract recruiter context from headers
+      const ownerId = req.headers["x-owner-id"] as string | undefined;
+      let recruiterEmail = undefined;
+      
+      if (ownerId && ownerId !== "global") {
+        // Robust lookup for both ObjectId and legacy ID field
+        const query = mongoose.isValidObjectId(ownerId) 
+          ? { _id: ownerId } 
+          : { id: ownerId };
+        
+        const recruiter = await User.findOne(query).lean();
+        if (recruiter) recruiterEmail = recruiter.email;
+      }
+
+      await emailService.sendCustomEmail(targetEmail, subject, message, recruiterEmail);
+
 
       return res.status(200).json({ status: "success", message: "Email dispatched successfully." });
     } catch (error: any) {

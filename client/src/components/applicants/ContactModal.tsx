@@ -73,7 +73,7 @@ export default function ContactModal({ applicant, isOpen, onClose }: ContactModa
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-scrutiq-border"
+            className="relative w-full max-w-xl bg-scrutiq-surface rounded-3xl shadow-2xl overflow-hidden border border-scrutiq-border"
           >
             <div className="p-8 border-b border-scrutiq-border flex items-center justify-between bg-scrutiq-bg/30">
               <div className="flex items-center gap-4">
@@ -87,7 +87,7 @@ export default function ContactModal({ applicant, isOpen, onClose }: ContactModa
               </div>
               <button 
                 onClick={onClose}
-                className="p-2 hover:bg-white rounded-xl transition-all border border-transparent hover:border-scrutiq-border"
+                className="p-2 hover:bg-scrutiq-surface rounded-xl transition-all border border-transparent hover:border-scrutiq-border"
               >
                 <X className="size-5 text-scrutiq-muted" />
               </button>

@@ -28,12 +28,12 @@ const MarkdownLite = ({ text }: { text: string }) => {
     let formatted = line
       .replace(
         /\*\*(.*?)\*\*/g,
-        '<strong class="font-black text-[#1c232b]">$1</strong>',
+        '<strong class="font-black text-scrutiq-dark">$1</strong>',
       )
-      .replace(/\*(.*?)\*/g, '<em class="italic text-[#1c232b]">$1</em>')
+      .replace(/\*(.*?)\*/g, '<em class="italic text-scrutiq-dark">$1</em>')
       .replace(
         /`(.*?)`/g,
-        '<code class="bg-[#F1F5F9] px-1.5 py-0.5 rounded text-[#1c232b] font-bold font-mono text-[11px]">$1</code>',
+        '<code class="bg-scrutiq-bg px-1.5 py-0.5 rounded text-scrutiq-dark font-bold font-mono text-[11px]">$1</code>',
       );
     return formatted;
   };
@@ -55,30 +55,30 @@ const MarkdownLite = ({ text }: { text: string }) => {
     elements.push(
       <div
         key={`table-${index}`}
-        className="overflow-x-auto my-4 border border-[#CBD5E1] rounded-xl shadow-md"
+        className="overflow-x-auto my-4 border border-scrutiq-border rounded-xl shadow-md"
       >
         <table className="w-full text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-[#F1F5F9] border-b border-[#CBD5E1]">
+            <tr className="bg-scrutiq-bg border-b border-scrutiq-border">
               {tableData[0].map((cell, ci) => (
                 <th
                   key={ci}
-                  className="px-4 py-3 font-black text-[#1c232b] uppercase tracking-wider"
+                  className="px-4 py-3 font-black text-scrutiq-dark uppercase tracking-wider"
                   dangerouslySetInnerHTML={{ __html: processLine(cell) }}
                 />
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#E2E8F0]">
+          <tbody className="divide-y divide-scrutiq-border">
             {tableData.slice(1).map((row, ri) => (
               <tr
                 key={ri}
-                className="bg-white hover:bg-[#F8FAFC] transition-colors"
+                className="bg-scrutiq-surface hover:bg-scrutiq-hover transition-colors"
               >
                 {row.map((cell, ci) => (
                   <td
                     key={ci}
-                    className="px-4 py-2.5 text-[#1c232b] font-medium"
+                    className="px-4 py-2.5 text-scrutiq-dark font-medium"
                     dangerouslySetInnerHTML={{ __html: processLine(cell) }}
                   />
                 ))}
@@ -136,7 +136,7 @@ const MarkdownLite = ({ text }: { text: string }) => {
       elements.push(
         <h3
           key={i}
-          className={`${sizeClass} font-black uppercase tracking-widest text-[#1c232b] mt-6 pb-2 ${level <= 2 ? "border-b-2" : "border-b"} border-[#E2E8F0]`}
+          className={`${sizeClass} font-black uppercase tracking-widest text-scrutiq-dark mt-6 pb-2 ${level <= 2 ? "border-b-2" : "border-b"} border-scrutiq-border`}
           dangerouslySetInnerHTML={{ __html: processLine(content) }}
         />,
       );
@@ -148,9 +148,9 @@ const MarkdownLite = ({ text }: { text: string }) => {
       const content = trimmed.substring(2);
       elements.push(
         <div key={i} className="flex gap-4 pl-3 items-start group">
-          <span className="text-[#1c232b] mt-2 w-2 h-2 rounded-full bg-[#1c232b] shrink-0 border border-white shadow-sm" />
+          <span className="text-scrutiq-dark mt-2 w-2 h-2 rounded-full bg-scrutiq-dark shrink-0 border border-scrutiq-border shadow-sm" />
           <div
-            className="text-[14px] leading-relaxed text-[#1c232b] font-medium"
+            className="text-[14px] leading-relaxed text-scrutiq-dark font-medium"
             dangerouslySetInnerHTML={{ __html: processLine(content) }}
           />
         </div>,
@@ -162,7 +162,7 @@ const MarkdownLite = ({ text }: { text: string }) => {
     elements.push(
       <div
         key={i}
-        className="text-[14px] leading-relaxed text-[#1c232b] font-medium"
+        className="text-[14px] leading-relaxed text-scrutiq-dark font-medium"
         dangerouslySetInnerHTML={{ __html: processLine(line) }}
       />,
     );
@@ -246,7 +246,7 @@ const ChatPage = () => {
       {/* Main Chat Area */}
       <div className="flex-1 bg-scrutiq-surface rounded-3xl border border-scrutiq-border shadow-sm flex flex-col overflow-hidden relative">
         {/* Compact Header */}
-        <div className="px-6 py-3 border-b border-scrutiq-border/50 flex items-center justify-between bg-white/50 backdrop-blur-sm sticky top-0 z-20">
+        <div className="px-6 py-3 border-b border-scrutiq-border/50 flex items-center justify-between bg-scrutiq-surface/50 backdrop-blur-sm sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <div className="size-8 rounded-lg bg-scrutiq-blue/10 flex items-center justify-center">
               <Bot className="size-5 text-scrutiq-blue" />
@@ -289,7 +289,7 @@ const ChatPage = () => {
                 <div
                   className={`size-10 rounded-xl shrink-0 flex items-center justify-center shadow-sm border ${
                     msg.role === "user"
-                      ? "bg-white border-scrutiq-border text-scrutiq-dark"
+                      ? "bg-scrutiq-surface border-scrutiq-border text-scrutiq-dark"
                       : "bg-scrutiq-blue border-scrutiq-blue text-white"
                   }`}
                 >
@@ -307,8 +307,9 @@ const ChatPage = () => {
                   <div
                     className={`px-5 py-3.5 rounded-2xl shadow-sm border ${
                       msg.role === "user"
-                        ? "bg-[#F1F5F9] text-[#1c232b] border-[#E2E8F0] rounded-tr-sm"
-                        : "bg-white text-[#1c232b] border-[#E2E8F0] rounded-tl-sm"
+                        ? "bg-scrutiq-bg text-scrutiq-dark border-scrutiq-border rounded-tr-sm"
+                        : "bg-scrutiq-surface text-scrutiq-dark border-scrutiq-border rounded-tl-sm"
+
                     }`}
                   >
                     <MarkdownLite text={msg.content} />
@@ -333,7 +334,7 @@ const ChatPage = () => {
           <div ref={scrollRef} />
         </div>
 
-        <div className="p-4 pt-2 md:p-8 md:pt-4 bg-white relative z-10">
+        <div className="p-4 pt-2 md:p-8 md:pt-4 bg-scrutiq-surface relative z-10">
           <div className="w-full px-0 sm:px-14">
             <div className="flex items-end gap-3 bg-scrutiq-bg border border-scrutiq-border rounded-2xl p-2 focus-within:border-scrutiq-blue focus-within:ring-4 focus-within:ring-scrutiq-blue/5 transition-all">
               <textarea
@@ -348,7 +349,7 @@ const ChatPage = () => {
                   }
                 }}
                 placeholder="Ask me to rank candidates, trigger screenings, or listing active jobs..."
-                className="flex-1 bg-transparent border-none outline-none text-sm font-bold text-[#1c232b] px-4 py-3 placeholder:text-scrutiq-muted/50 resize-none max-h-[120px] custom-scrollbar"
+                className="flex-1 bg-transparent border-none outline-none text-sm font-bold text-scrutiq-dark px-4 py-3 placeholder:text-scrutiq-muted/50 resize-none max-h-[120px] custom-scrollbar"
               />
               <button
                 onClick={handleSendMessage}

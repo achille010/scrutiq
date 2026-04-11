@@ -62,7 +62,7 @@ export default function ApplicantTable({ source }: ApplicantTableProps) {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-white/5 bg-white/5">
+            <tr className="border-b border-white/5 bg-scrutiq-surface/5">
               <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Candidate</th>
               <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Role</th>
               <th className="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Match Score</th>
@@ -77,7 +77,7 @@ export default function ApplicantTable({ source }: ApplicantTableProps) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="group hover:bg-white/[0.02] transition-all"
+                className="group hover:bg-scrutiq-surface/[0.02] transition-all"
               >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
@@ -95,7 +95,7 @@ export default function ApplicantTable({ source }: ApplicantTableProps) {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3 w-48">
-                    <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
+                    <div className="flex-1 h-1.5 bg-scrutiq-surface/5 rounded-full overflow-hidden border border-white/5">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${applicant.matchScore}%` }}
@@ -118,7 +118,7 @@ export default function ApplicantTable({ source }: ApplicantTableProps) {
                   <span className={`text-[10px] uppercase tracking-tighter font-bold px-2 py-0.5 rounded-full border flex items-center gap-1.5 w-fit ${
                     applicant.status === "Shortlisted" ? "text-brand-emerald bg-brand-emerald/10 border-brand-emerald/20" :
                     applicant.status === "Screened" ? "text-brand-indigo bg-brand-indigo/10 border-brand-indigo/20" :
-                    "text-gray-400 bg-white/5 border-white/10"
+                    "text-gray-400 bg-scrutiq-surface/5 border-white/10"
                   }`}>
                     <FontAwesomeIcon icon={faCircle} className="text-[6px]" />
                     {applicant.status}
@@ -126,13 +126,13 @@ export default function ApplicantTable({ source }: ApplicantTableProps) {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <button className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-all" title="View Profile">
+                    <button className="p-2 hover:bg-scrutiq-surface/5 rounded-lg text-gray-500 hover:text-white transition-all" title="View Profile">
                       <FontAwesomeIcon icon={faEye} />
                     </button>
                     <button className="p-2 hover:bg-rose-500/10 rounded-lg text-gray-500 hover:text-rose-400 transition-all" title="Reject Candidate">
                       <FontAwesomeIcon icon={faUserSlash} />
                     </button>
-                    <button className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-all">
+                    <button className="p-2 hover:bg-scrutiq-surface/5 rounded-lg text-gray-500 hover:text-white transition-all">
                       <FontAwesomeIcon icon={faEllipsisVertical} />
                     </button>
                   </div>
@@ -145,7 +145,7 @@ export default function ApplicantTable({ source }: ApplicantTableProps) {
       
       {filteredApplicants.length === 0 && (
         <div className="p-12 flex flex-col items-center justify-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-gray-600">
+          <div className="w-16 h-16 rounded-full bg-scrutiq-surface/5 flex items-center justify-center text-gray-600">
             <FontAwesomeIcon icon={faUsers} size="2x" />
           </div>
           <div>
@@ -160,7 +160,7 @@ export default function ApplicantTable({ source }: ApplicantTableProps) {
       <div className="p-4 border-t border-white/5 flex items-center justify-between text-xs text-gray-500">
         <span>Showing {filteredApplicants.length} of {filteredApplicants.length} results</span>
         <div className="flex items-center gap-2">
-          <button className="px-3 py-1.5 bg-white/5 rounded-lg hover:bg-white/10 transition-all font-bold">Previous</button>
+          <button className="px-3 py-1.5 bg-scrutiq-surface/5 rounded-lg hover:bg-scrutiq-surface/10 transition-all font-bold">Previous</button>
           <button className="px-3 py-1.5 bg-brand-indigo text-white rounded-lg shadow-lg shadow-brand-indigo/20 font-bold">Next</button>
         </div>
       </div>

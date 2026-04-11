@@ -171,7 +171,7 @@ const ScreeningFlow = () => {
                   className={`size-8 rounded-lg flex items-center justify-center font-bold text-xs transition-all ${
                     step >= s.n
                       ? "bg-scrutiq-blue text-white shadow-lg shadow-scrutiq-blue/20"
-                      : "bg-white text-scrutiq-muted border border-scrutiq-border"
+                      : "bg-scrutiq-surface text-scrutiq-muted border border-scrutiq-border"
                   }`}
                 >
                   {s.n}
@@ -300,7 +300,7 @@ const ScreeningFlow = () => {
                         className={`size-10 rounded-xl border flex items-center justify-center font-bold transition-all ${
                           selectedCandidates.includes(app._id)
                             ? "bg-scrutiq-blue text-white shadow-lg shadow-scrutiq-blue/20"
-                            : "bg-white text-scrutiq-muted"
+                            : "bg-scrutiq-surface text-scrutiq-muted"
                         }`}
                       >
                         {app.name.charAt(0)}
@@ -478,7 +478,7 @@ const ScreeningFlow = () => {
                             className={`size-8 rounded-lg flex items-center justify-center font-bold text-xs ${
                               index === 0
                                 ? "bg-scrutiq-blue text-white shadow-lg shadow-scrutiq-blue/20"
-                                : "bg-white text-scrutiq-muted border border-scrutiq-border"
+                                : "bg-scrutiq-surface text-scrutiq-muted border border-scrutiq-border"
                             }`}
                           >
                             #{index + 1}
@@ -540,7 +540,7 @@ const ScreeningFlow = () => {
                                 const cleanPath = `/uploads/${sanitizedPath}`;
                                 window.open(`${baseUrl}${cleanPath}`, '_blank');
                               }}
-                              className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-white rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
+                              className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-scrutiq-surface rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
                               title="View Original PDF"
                             >
                               <Eye className="size-4" />
@@ -550,7 +550,7 @@ const ScreeningFlow = () => {
                                 setSelectedResult(result);
                                 setShowModal(true);
                               }}
-                              className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-white rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
+                              className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-scrutiq-surface rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
                               title="View AI Details"
                             >
                               <ExternalLink className="size-4" />

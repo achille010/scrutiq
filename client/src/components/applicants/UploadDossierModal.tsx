@@ -159,7 +159,7 @@ const UploadDossierModal = ({
               </div>
               <button
                 onClick={onClose}
-                className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-white rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
+                className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-scrutiq-surface rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
               >
                 <X className="size-5" />
               </button>
@@ -167,7 +167,7 @@ const UploadDossierModal = ({
 
             <div className="p-8 space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar">
               {/* Option 1: File Section */}
-              <div className={`overflow-hidden rounded-2xl border transition-all duration-300 ${activeAccordion === 'files' ? 'border-scrutiq-blue border-opacity-30 bg-white' : 'border-scrutiq-border hover:border-scrutiq-border/80 bg-scrutiq-bg/30'}`}>
+              <div className={`overflow-hidden rounded-2xl border transition-all duration-300 ${activeAccordion === 'files' ? 'border-scrutiq-blue border-opacity-30 bg-scrutiq-surface' : 'border-scrutiq-border hover:border-scrutiq-border/80 bg-scrutiq-bg/30'}`}>
                 <button 
                   onClick={() => setActiveAccordion(activeAccordion === 'files' ? null : 'files')}
                   className="w-full px-6 py-4 flex items-center justify-between text-left group"
@@ -221,7 +221,7 @@ const UploadDossierModal = ({
               </div>
 
                 {/* Option 2: Link Section */}
-                <div className={`overflow-hidden rounded-2xl border transition-all duration-300 ${activeAccordion === 'links' ? 'border-scrutiq-blue border-opacity-30 bg-white' : 'border-scrutiq-border hover:border-scrutiq-border/80 bg-scrutiq-bg/30'}`}>
+                <div className={`overflow-hidden rounded-2xl border transition-all duration-300 ${activeAccordion === 'links' ? 'border-scrutiq-blue border-opacity-30 bg-scrutiq-surface' : 'border-scrutiq-border hover:border-scrutiq-border/80 bg-scrutiq-bg/30'}`}>
                   <button 
                     onClick={() => setActiveAccordion(activeAccordion === 'links' ? null : 'links')}
                     className="w-full px-6 py-4 flex items-center justify-between text-left group"
@@ -278,7 +278,7 @@ const UploadDossierModal = ({
                    
                    <div className="space-y-2 max-h-[160px] overflow-y-auto pr-2 custom-scrollbar">
                      {files.map((file, i) => (
-                        <div key={`file-${i}`} className="flex items-center justify-between p-2.5 bg-white border border-scrutiq-border rounded-xl shadow-sm group">
+                        <div key={`file-${i}`} className="flex items-center justify-between p-2.5 bg-scrutiq-surface border border-scrutiq-border rounded-xl shadow-sm group">
                           <div className="flex items-center gap-3">
                             <div className="p-1.5 rounded-lg bg-scrutiq-bg text-scrutiq-blue">
                               <FileText className="size-3" />

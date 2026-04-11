@@ -344,7 +344,7 @@ const ApplicantsPage = () => {
 
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 px-1">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-          <div className="relative group flex items-center bg-white border border-scrutiq-border rounded-xl px-4 py-2 w-full sm:w-80 focus-within:border-scrutiq-blue focus-within:ring-4 focus-within:ring-scrutiq-blue/5 transition-all">
+          <div className="relative group flex items-center bg-scrutiq-surface border border-scrutiq-border rounded-xl px-4 py-2 w-full sm:w-80 focus-within:border-scrutiq-blue focus-within:ring-4 focus-within:ring-scrutiq-blue/5 transition-all">
             <Search className="size-4 text-scrutiq-muted group-focus-within:text-scrutiq-blue" />
             <input
               type="text"
@@ -356,7 +356,7 @@ const ApplicantsPage = () => {
           </div>
           <button
             onClick={toggleSort}
-            className={`p-2.5 border rounded-xl transition-all flex items-center gap-2 text-[10px] font-bold tracking-widest ${sortOrder !== "none" ? "bg-scrutiq-blue text-white border-scrutiq-blue" : "bg-white border-scrutiq-border text-scrutiq-muted hover:bg-scrutiq-bg"}`}
+            className={`p-2.5 border rounded-xl transition-all flex items-center gap-2 text-[10px] font-bold tracking-widest ${sortOrder !== "none" ? "bg-scrutiq-blue text-white border-scrutiq-blue" : "bg-scrutiq-surface border-scrutiq-border text-scrutiq-muted hover:bg-scrutiq-bg"}`}
           >
             <Filter className="size-4" />
             <span>
@@ -461,7 +461,7 @@ const ApplicantsPage = () => {
                         disabled={!app.isScreened}
                         className={`p-2 rounded-xl border transition-all ${
                           app.isScreened
-                            ? "text-scrutiq-muted hover:text-scrutiq-blue hover:bg-white border-transparent hover:border-scrutiq-border"
+                            ? "text-scrutiq-muted hover:text-scrutiq-blue hover:bg-scrutiq-surface border-transparent hover:border-scrutiq-border"
                             : "text-scrutiq-muted/30 border-transparent cursor-not-allowed"
                         }`}
                         title={
@@ -490,7 +490,7 @@ const ApplicantsPage = () => {
                             setIsResumeOpen(true);
                           }
                         }}
-                        className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-white rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
+                        className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-scrutiq-surface rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
                         title="View Resume"
                       >
                         <Eye className="size-4" />

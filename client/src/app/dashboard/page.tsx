@@ -61,17 +61,18 @@ const DashboardPage = () => {
   const getColorStyles = (color: string) => {
     switch (color) {
       case "blue":
-        return "bg-blue-50 text-scrutiq-blue border-blue-100";
+        return "bg-scrutiq-blue/10 text-scrutiq-blue border-scrutiq-blue/20";
       case "emerald":
-        return "bg-emerald-50 text-emerald-600 border-emerald-100";
+        return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
       case "amber":
-        return "bg-amber-50 text-amber-600 border-amber-100";
+        return "bg-amber-500/10 text-amber-500 border-amber-500/20";
       case "rose":
-        return "bg-rose-50 text-rose-600 border-rose-100";
+        return "bg-rose-500/10 text-rose-500 border-rose-500/20";
       default:
-        return "bg-gray-50 text-gray-600 border-gray-100";
+        return "bg-scrutiq-bg text-scrutiq-muted border-scrutiq-border";
     }
   };
+
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -142,7 +143,7 @@ const DashboardPage = () => {
                   href="/dashboard/applicants"
                   className="p-6 bg-scrutiq-bg border border-scrutiq-border rounded-2xl hover:border-scrutiq-blue hover:shadow-xl transition-all group/card"
                 >
-                  <div className="size-10 rounded-xl bg-white border border-scrutiq-border flex items-center justify-center mb-4 group-hover/card:bg-scrutiq-blue group-hover/card:text-white transition-all">
+                  <div className="size-10 rounded-xl bg-scrutiq-surface border border-scrutiq-border flex items-center justify-center mb-4 group-hover/card:bg-scrutiq-blue group-hover/card:text-white transition-all">
                     <Upload className="size-5" />
                   </div>
                   <p className="text-[10px] font-black text-scrutiq-blue tracking-widest mb-1">
@@ -159,7 +160,7 @@ const DashboardPage = () => {
                   href="/dashboard/screenings"
                   className="p-6 bg-scrutiq-bg border border-scrutiq-border rounded-2xl hover:border-scrutiq-blue hover:shadow-xl transition-all group/card"
                 >
-                  <div className="size-10 rounded-xl bg-white border border-scrutiq-border flex items-center justify-center mb-4 group-hover/card:bg-scrutiq-blue group-hover/card:text-white transition-all">
+                  <div className="size-10 rounded-xl bg-scrutiq-surface border border-scrutiq-border flex items-center justify-center mb-4 group-hover/card:bg-scrutiq-blue group-hover/card:text-white transition-all">
                     <ShieldCheck className="size-5" />
                   </div>
                   <p className="text-[10px] font-black text-scrutiq-blue tracking-widest mb-1">

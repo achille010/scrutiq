@@ -331,7 +331,7 @@ export default function AnalyticsPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleRefresh}
-            className={`p-4 rounded-xl border border-scrutiq-border bg-white transition-all hover:bg-scrutiq-bg active:scale-95`}
+            className={`p-4 rounded-xl border border-scrutiq-border bg-scrutiq-surface transition-all hover:bg-scrutiq-bg active:scale-95`}
           >
             <RefreshCcw
               className={`size-5 text-scrutiq-muted ${isRefreshing ? "animate-spin text-scrutiq-blue" : ""}`}
@@ -412,13 +412,13 @@ export default function AnalyticsPage() {
               <div className="flex p-1 bg-scrutiq-bg border border-scrutiq-border rounded-xl">
                 <button
                   onClick={() => setActiveTab("performance")}
-                  className={`px-3 md:px-4 py-2 text-[9px] md:text-[10px] font-black rounded-lg transition-all ${activeTab === "performance" ? "bg-white text-scrutiq-blue shadow-sm" : "text-scrutiq-muted hover:text-scrutiq-dark"}`}
+                  className={`px-3 md:px-4 py-2 text-[9px] md:text-[10px] font-black rounded-lg transition-all ${activeTab === "performance" ? "bg-scrutiq-surface text-scrutiq-blue shadow-sm" : "text-scrutiq-muted hover:text-scrutiq-dark"}`}
                 >
                   Screenings
                 </button>
                 <button
                   onClick={() => setActiveTab("distribution")}
-                  className={`px-3 md:px-4 py-2 text-[9px] md:text-[10px] font-black rounded-lg transition-all ${activeTab === "distribution" ? "bg-white text-scrutiq-blue shadow-sm" : "text-scrutiq-muted hover:text-scrutiq-dark"}`}
+                  className={`px-3 md:px-4 py-2 text-[9px] md:text-[10px] font-black rounded-lg transition-all ${activeTab === "distribution" ? "bg-scrutiq-surface text-scrutiq-blue shadow-sm" : "text-scrutiq-muted hover:text-scrutiq-dark"}`}
                 >
                   Quality
                 </button>
@@ -586,7 +586,7 @@ export default function AnalyticsPage() {
       {/* Bottom Technical Status */}
       <div className="admin-card border-[#2C7BE5]/10 bg-scrutiq-blue/5 p-8 relative overflow-hidden group">
         <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-          <div className="size-20 rounded-3xl bg-white flex items-center justify-center shadow-lg shadow-scrutiq-blue/5 border border-scrutiq-border">
+          <div className="size-20 rounded-3xl bg-scrutiq-surface flex items-center justify-center shadow-lg shadow-scrutiq-blue/5 border border-scrutiq-border">
             <Activity className="size-10 text-scrutiq-blue" />
           </div>
           <div className="flex-1 space-y-2 text-center md:text-left">

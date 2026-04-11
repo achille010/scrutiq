@@ -71,7 +71,7 @@ class EmailService {
     }
   }
 
-  async sendCustomEmail(email: string, subject: string, message: string) {
+  async sendCustomEmail(email: string, subject: string, message: string, recruiterEmail?: string) {
     // Process message for better rendering: convert double newlines to paragraphs and dashes to bullets
     const formattedMessage = message
       .split('\n\n')
@@ -79,6 +79,14 @@ class EmailService {
       .join('')
       .replace(/ - (.*?)(?=<br\/>|<\/p>)/g, '<li style="margin-bottom: 8px; color: #334155;">$1</li>')
       .replace(/(<li.*<\/li>)+/g, '<ul style="padding-left: 20px; list-style-type: square; margin-bottom: 24px;">$&</ul>');
+
+    const feedbackFooter = recruiterEmail 
+      ? `<p style="margin: 4px 0 0; font-size: 12px; color: #64748B;">
+          Any question or feedbacks on this email may be sent to ${recruiterEmail}.
+        </p>`
+      : `<p style="margin: 4px 0 0; font-size: 12px; color: #64748B;">
+          Reply to this message to speak with our technical support team.
+        </p>`;
 
     const mailOptions = {
       from: `"Scrutiq Notifications" <${process.env.EMAIL_USER}>`,
@@ -110,9 +118,7 @@ class EmailService {
               <p style="margin: 0; font-size: 13px; font-weight: 700; color: #1E293B;">
                 Need assistance?
               </p>
-              <p style="margin: 4px 0 0; font-size: 12px; color: #64748B;">
-                Reply to this message to speak with our technical support team.
-              </p>
+              ${feedbackFooter}
             </div>
           </div>
 
@@ -126,6 +132,7 @@ class EmailService {
       `,
     };
 
+
     try {
       await this.transporter.sendMail(mailOptions);
       console.log(`[EMAIL] Custom message dispatched to ${email}`);
@@ -135,6 +142,54 @@ class EmailService {
       throw new Error(`Failed to dispatch email: ${error.message}`);
     }
   }
+
+  async sendPasswordResetPin(email: string, pin: string) {
+    const mailOptions = {
+      from: `"Scrutiq Security" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Your Password Recovery PIN",
+      html: `
+        <div style="font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; border: 1px solid #E2E8F0; border-radius: 24px; color: #1E293B; background: #FFFFFF;">
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+          </style>
+          
+          <div style="text-align: center; margin-bottom: 40px;">
+            <div style="display: inline-block; font-size: 28px; font-weight: 800; color: #DC2626; letter-spacing: -1px;">
+              Scrutiq Security<span style="color: #64748B;">.</span>
+            </div>
+          </div>
+
+          <h1 style="font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 12px; color: #0F172A; letter-spacing: -0.02em;">Password Recovery</h1>
+          <p style="text-align: center; color: #64748B; font-size: 14px; margin-bottom: 40px;">You are receiving this because a password reset was requested for your recruiter account. Use the PIN below to proceed.</p>
+          
+          <div style="background: #FFF1F2; border: 1px solid #FFE4E6; border-radius: 20px; padding: 32px; text-align: center; margin-bottom: 40px;">
+            <span style="font-size: 48px; font-weight: 800; color: #DC2626; letter-spacing: 12px; font-family: monospace;">${pin}</span>
+          </div>
+          
+          <p style="text-align: center; color: #F43F5E; font-size: 11px; font-weight: bold; margin-top: 20px;">
+            This PIN is valid for 10 minutes.
+          </p>
+
+          <div style="border-top: 1px solid #F1F5F9; margin-top: 40px; padding-top: 30px; text-align: center;">
+            <p style="font-size: 11px; color: #94A3B8; line-height: 1.8; margin-bottom: 0;">
+              If you did not request this, please ignore this email.<br/>
+              &copy; 2026 Scrutiq Recruitment • Managed Security Infrastructure.
+            </p>
+          </div>
+        </div>
+      `,
+    };
+
+    try {
+      await this.transporter.sendMail(mailOptions);
+      console.log(`[SECURITY] Reset PIN dispatched to ${email}`);
+    } catch (error: any) {
+      console.error("[SECURITY ERROR] PIN dispatch failed:", error);
+      throw new Error(`Technical failure during recovery email dispatch: ${error.message}`);
+    }
+  }
 }
+
 
 export default new EmailService();

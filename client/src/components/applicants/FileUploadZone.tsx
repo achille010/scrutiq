@@ -68,7 +68,7 @@ export default function FileUploadZone() {
       <div
         {...getRootProps()}
         className={`relative glass-card border-2 border-dashed p-12 transition-all cursor-pointer text-center group ${
-          isDragActive ? "border-brand-indigo bg-brand-indigo/5 scale-[0.99]" : "border-white/10 hover:border-brand-indigo/50 hover:bg-white/[0.02]"
+          isDragActive ? "border-brand-indigo bg-brand-indigo/5 scale-[0.99]" : "border-white/10 hover:border-brand-indigo/50 hover:bg-scrutiq-surface/[0.02]"
         }`}
       >
         <input {...getInputProps()} />
@@ -83,15 +83,15 @@ export default function FileUploadZone() {
             </p>
           </div>
           <div className="flex items-center gap-3 mt-2">
-            <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg flex items-center gap-2 text-xs text-gray-500">
+            <div className="px-3 py-1 bg-scrutiq-surface/5 border border-white/10 rounded-lg flex items-center gap-2 text-xs text-gray-500">
               <FontAwesomeIcon icon={faFileCsv} className="text-emerald-400" />
               CSV
             </div>
-            <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg flex items-center gap-2 text-xs text-gray-500">
+            <div className="px-3 py-1 bg-scrutiq-surface/5 border border-white/10 rounded-lg flex items-center gap-2 text-xs text-gray-500">
               <FontAwesomeIcon icon={faFileExcel} className="text-blue-400" />
               XLSX
             </div>
-            <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg flex items-center gap-2 text-xs text-gray-500">
+            <div className="px-3 py-1 bg-scrutiq-surface/5 border border-white/10 rounded-lg flex items-center gap-2 text-xs text-gray-500">
               <FontAwesomeIcon icon={faFilePdf} className="text-rose-400" />
               PDF
             </div>
@@ -123,7 +123,7 @@ export default function FileUploadZone() {
                   key={i}
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="p-3 bg-white/5 border border-white/10 rounded-xl flex items-center justify-between group"
+                  className="p-3 bg-scrutiq-surface/5 border border-white/10 rounded-xl flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
                     <FontAwesomeIcon
@@ -153,7 +153,7 @@ export default function FileUploadZone() {
                       <span>Importing Candidates...</span>
                       <span>{uploadProgress}%</span>
                     </div>
-                    <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-1 bg-scrutiq-surface/5 rounded-full overflow-hidden">
                       <motion.div
                         className="h-full bg-brand-indigo"
                         initial={{ width: 0 }}
@@ -167,7 +167,7 @@ export default function FileUploadZone() {
                 onClick={handleUpload}
                 disabled={isUploading}
                 className={`px-8 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
-                  isUploading ? "bg-white/10 text-gray-500 cursor-not-allowed" : "bg-brand-indigo hover:bg-brand-indigo/90 text-white shadow-brand-indigo/25"
+                  isUploading ? "bg-scrutiq-surface/10 text-gray-500 cursor-not-allowed" : "bg-brand-indigo hover:bg-brand-indigo/90 text-white shadow-brand-indigo/25"
                 }`}
               >
                 {isUploading ? (

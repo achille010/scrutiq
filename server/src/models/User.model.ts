@@ -8,7 +8,14 @@ export interface IUser extends Document {
   companyName: string;
   isVerified: boolean;
   verificationCode?: string;
+  resetCode?: string;
+  resetCodeExpires?: Date;
   role: "admin" | "recruiter";
+  profilePic?: string;
+  notifications?: {
+    candidateAlerts: boolean;
+    screeningCompletions: boolean;
+  };
 }
 
 const UserSchema: Schema = new Schema(
@@ -20,9 +27,16 @@ const UserSchema: Schema = new Schema(
     companyName: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
     verificationCode: { type: String },
+    resetCode: { type: String },
+    resetCodeExpires: { type: Date },
     role: { type: String, enum: ["admin", "recruiter"], default: "recruiter" },
+    profilePic: { type: String },
+    notifications: {
+      candidateAlerts: { type: Boolean, default: true },
+      screeningCompletions: { type: Boolean, default: true },
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model<IUser>("User", UserSchema);

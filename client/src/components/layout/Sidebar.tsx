@@ -16,6 +16,7 @@ import {
   Clock,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import api from "@/lib/api";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -24,15 +25,50 @@ interface SidebarProps {
 const Sidebar = ({ onClose }: SidebarProps) => {
   const pathname = usePathname();
   const [lastUpdate, setLastUpdate] = useState("Just Now");
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsed = JSON.parse(storedUser);
+      setUser(parsed);
+
+      // Background Sync: If branding is missing, repair the session silently
+      if (!parsed.profilePic && parsed.id) {
+        api.get(`/auth/profile/${parsed.id}`).then((res) => {
+          if (res.data.status === "success") {
+            const updated = { ...parsed, profilePic: res.data.data.profilePic };
+            localStorage.setItem("user", JSON.stringify(updated));
+            setUser(updated);
+            window.dispatchEvent(new CustomEvent("user-profile-updated"));
+          }
+        }).catch(() => {});
+      }
+    }
+
+    const handleProfileSync = () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        console.log("[Sidebar] Profile Sync:", parsed);
+        setUser(parsed);
+      }
+    };
+
+
+    window.addEventListener("user-profile-updated", handleProfileSync);
+
     const timer = setInterval(() => {
       const now = new Date();
       setLastUpdate(
         `${now.getHours()}:${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`,
       );
     }, 5000);
-    return () => clearInterval(timer);
+    
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("user-profile-updated", handleProfileSync);
+    };
   }, []);
 
   const menuItems = [
@@ -54,14 +90,19 @@ const Sidebar = ({ onClose }: SidebarProps) => {
   ];
 
   return (
-    <div className="w-72 bg-scrutiq-surface border-r border-scrutiq-border flex flex-col h-full shadow-2xl lg:shadow-none">
+    <div className="w-72 bg-scrutiq-surface border-r border-scrutiq-border flex flex-col h-full shadow-2xl lg:shadow-none font-jakarta">
       <div className="p-8 border-b border-scrutiq-border/50 flex items-center justify-between">
         <Link
           href="/dashboard"
           className="flex items-center gap-3 group"
           onClick={onClose}
         >
-          <img src="/Untitled_design-removebg-preview.svg" alt="Scrutiq" className="size-10 group-hover:rotate-6 transition-all duration-500" />
+          <img
+            src="/Untitled_design-removebg-preview.svg"
+            alt="Scrutiq"
+            className="size-10 group-hover:rotate-6 transition-all duration-500"
+            style={{ filter: "var(--stq-logo-filter)" }}
+          />
           <div>
             <h1 className="text-xl font-black text-scrutiq-dark tracking-tighter leading-none group-hover:text-scrutiq-blue transition-colors">
               Scrutiq
@@ -91,8 +132,8 @@ const Sidebar = ({ onClose }: SidebarProps) => {
               onClick={onClose}
               className={`flex items-center gap-4 px-5 py-4 rounded-2xl transition-all group ${
                 isActive
-                  ? "bg-white text-scrutiq-blue shadow-lg shadow-scrutiq-blue/5 border border-scrutiq-border/50 scale-[1.02]"
-                  : "text-scrutiq-muted hover:bg-white hover:text-scrutiq-dark hover:shadow-sm"
+                  ? "bg-scrutiq-surface text-scrutiq-blue shadow-lg shadow-scrutiq-blue/5 border border-scrutiq-border/50 scale-[1.02]"
+                  : "text-scrutiq-muted hover:bg-scrutiq-surface hover:text-scrutiq-dark hover:shadow-sm"
               }`}
             >
               <item.icon

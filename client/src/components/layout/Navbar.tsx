@@ -4,10 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import {
   Bell,
   Search,
-  User,
   LogOut,
   ChevronRight,
   Settings,
+
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
@@ -15,6 +15,8 @@ import {
   Clock,
   Check,
   X,
+  ChevronDown,
+  CircleUserRound,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -46,6 +48,8 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState<any>(null);
   const [notifications, setNotifications] = useState<any[]>([]);
+  const [imgError, setImgError] = useState(false);
+
 
   const notificationsRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -96,7 +100,9 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
     const handleProfileSync = () => {
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
-        setUser(JSON.parse(storedUser));
+        const parsed = JSON.parse(storedUser);
+        console.log("[Navbar] Profile Sync:", parsed);
+        setUser(parsed);
       }
     };
 
@@ -108,12 +114,12 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
 
   const handleSignOut = () => {
     toast.info("Signing out of your company portal...");
-    
+
     // Purge local session persistence
     localStorage.removeItem("user");
     localStorage.removeItem("umurava_chat_history_v1");
     localStorage.removeItem("umurava_notifications_v1");
-    
+
     setTimeout(() => {
       router.push("/login");
       toast.success("You have been signed out.");
@@ -165,11 +171,13 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
       <div className="flex items-center gap-3 md:gap-6">
         <div className="relative group hidden md:flex items-center bg-scrutiq-bg border border-scrutiq-border rounded-xl px-4 py-2 w-48 lg:w-80 focus-within:border-scrutiq-blue focus-within:ring-4 focus-within:ring-scrutiq-blue/5 transition-all">
           <Search className="size-4 text-scrutiq-muted group-focus-within:text-scrutiq-blue" />
-          <form 
+          <form
             onSubmit={(e) => {
               e.preventDefault();
               if (searchQuery.trim()) {
-                router.push(`/dashboard/applicants?search=${encodeURIComponent(searchQuery)}`);
+                router.push(
+                  `/dashboard/applicants?search=${encodeURIComponent(searchQuery)}`,
+                );
               }
             }}
             className="flex-1 flex items-center"
@@ -183,7 +191,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
             />
           </form>
           {searchQuery && (
-            <button 
+            <button
               onClick={() => setSearchQuery("")}
               className="ml-2 p-0.5 text-scrutiq-muted hover:text-scrutiq-dark transition-colors"
             >
@@ -223,9 +231,13 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                     Notifications
                   </p>
                   {localNotifs.length > 0 && (
-                    <button 
+                    <button
                       onClick={() => {
-                        if (window.confirm("Are you sure you want to delete all notifications? This action cannot be undone.")) {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete all notifications? This action cannot be undone.",
+                          )
+                        ) {
                           clearAll();
                         }
                       }}
@@ -234,7 +246,6 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                       Clear All
                     </button>
                   )}
-
                 </div>
                 <div className="divide-y divide-scrutiq-border/30 max-h-[28rem] overflow-y-auto custom-scrollbar">
                   {allNotifications.length === 0 ? (
@@ -250,11 +261,15 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                     allNotifications.map((n, idx) => {
                       const isLocal = "timestamp" in n;
                       const type = n.type || "info";
-                      
+
                       const iconMap = {
-                        success: <CheckCircle2 className="size-4 text-emerald-500" />,
+                        success: (
+                          <CheckCircle2 className="size-4 text-emerald-500" />
+                        ),
                         error: <AlertCircle className="size-4 text-rose-500" />,
-                        warning: <AlertCircle className="size-4 text-amber-500" />,
+                        warning: (
+                          <AlertCircle className="size-4 text-amber-500" />
+                        ),
                         info: <Bell className="size-4 text-scrutiq-blue" />,
                       };
 
@@ -271,24 +286,37 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                       return (
                         <div
                           key={n.id || idx}
-                          onClick={() => isLocal && toggleExpandNotification(n.id)}
+                          onClick={() =>
+                            isLocal && toggleExpandNotification(n.id)
+                          }
                           className={`p-4 hover:bg-scrutiq-bg transition-all cursor-pointer group flex items-start gap-4 ${n.isExpanded ? "bg-scrutiq-bg/30" : ""}`}
                         >
-                          <div className={`mt-0.5 size-8 rounded-lg flex items-center justify-center shrink-0 ${
-                            type === "success" ? "bg-emerald-500/5" :
-                            type === "error" ? "bg-rose-500/5" :
-                            type === "warning" ? "bg-amber-500/5" : "bg-scrutiq-blue/5"
-                          }`}>
-                            {iconMap[type as keyof typeof iconMap] || iconMap.info}
+                          <div
+                            className={`mt-0.5 size-8 rounded-lg flex items-center justify-center shrink-0 ${
+                              type === "success"
+                                ? "bg-emerald-500/5"
+                                : type === "error"
+                                  ? "bg-rose-500/5"
+                                  : type === "warning"
+                                    ? "bg-amber-500/5"
+                                    : "bg-scrutiq-blue/5"
+                            }`}
+                          >
+                            {iconMap[type as keyof typeof iconMap] ||
+                              iconMap.info}
                           </div>
-                          
+
                           <div className="flex-1 min-w-0">
-                            <p className={`text-xs font-bold text-scrutiq-dark tracking-tight transition-colors ${n.isExpanded ? "" : "truncate"}`}>
+                            <p
+                              className={`text-xs font-bold text-scrutiq-dark tracking-tight transition-colors ${n.isExpanded ? "" : "truncate"}`}
+                            >
                               {n.title || n.message}
                             </p>
                             <div className="flex items-center gap-2 mt-1">
                               <p className="text-[9px] font-bold text-scrutiq-muted tracking-widest uppercase">
-                                {isLocal ? timeAgo(n.timestamp) : (n.time || "Recent")}
+                                {isLocal
+                                  ? timeAgo(n.timestamp)
+                                  : n.time || "Recent"}
                               </p>
                               {n.isExpanded && (
                                 <span className="text-[9px] font-bold text-scrutiq-blue tracking-widest uppercase px-1.5 py-0.5 bg-scrutiq-blue/5 rounded">
@@ -340,8 +368,14 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
           <div className="flex items-center gap-3 pl-2">
             <div className="text-right hidden sm:block">
               <p className="text-xs font-bold text-scrutiq-dark tracking-tight truncate max-w-[120px]">
-                {user?.name 
-                  ? user.name.split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')
+                {user?.name
+                  ? user.name
+                      .split(" ")
+                      .map(
+                        (w: string) =>
+                          w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(),
+                      )
+                      .join(" ")
                   : "Recruiter"}
               </p>
               <p className="text-[10px] font-bold text-scrutiq-blue tracking-widest leading-none">
@@ -359,10 +393,24 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   : "bg-scrutiq-bg border-scrutiq-border hover:bg-scrutiq-surface"
               }`}
             >
-              <User
-                className={`size-5 ${showProfile ? "text-scrutiq-blue" : "text-scrutiq-muted group-hover:text-scrutiq-blue"}`}
-              />
+              {user?.profilePic && !imgError ? (
+                <img 
+                  src={user.profilePic} 
+                  alt={user?.name || "User"} 
+                  className="size-full object-cover" 
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <CircleUserRound
+                  className={`size-6 ${showProfile ? "text-scrutiq-blue" : "text-scrutiq-muted group-hover:text-scrutiq-blue"} transition-colors`}
+                />
+              )}
             </button>
+
+
+
+
+
           </div>
 
           <AnimatePresence>

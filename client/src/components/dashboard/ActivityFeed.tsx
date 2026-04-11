@@ -85,7 +85,7 @@ const ActivityFeed = () => {
         </h2>
         <button
           onClick={fetchActivity}
-          className="p-1.5 hover:bg-white rounded-lg transition-all"
+          className="p-1.5 hover:bg-scrutiq-surface rounded-lg transition-all"
         >
           <RefreshCcw className="size-3.5 text-scrutiq-muted" />
         </button>
@@ -114,7 +114,7 @@ const ActivityFeed = () => {
                 {activity.target}
               </p>
             </div>
-            <button className="opacity-0 group-hover:opacity-100 transition-all p-1.5 hover:bg-white rounded-lg border border-scrutiq-border shadow-sm">
+            <button className="opacity-0 group-hover:opacity-100 transition-all p-1.5 hover:bg-scrutiq-surface rounded-lg border border-scrutiq-border shadow-sm">
               <ArrowUpRight className="size-3 text-scrutiq-blue" />
             </button>
           </div>

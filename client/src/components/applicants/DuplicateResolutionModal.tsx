@@ -26,7 +26,7 @@ const DuplicateResolutionModal = ({
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="bg-white w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden border border-scrutiq-border"
+            className="bg-scrutiq-surface w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden border border-scrutiq-border"
           >
             {/* Header */}
             <div className="p-6 border-b border-scrutiq-border flex items-center justify-between bg-amber-50/50">
@@ -34,7 +34,7 @@ const DuplicateResolutionModal = ({
                 <AlertTriangle className="size-6" />
                 <h2 className="text-xl font-black tracking-tight">Duplicate Conflict</h2>
               </div>
-              <button onClick={onClose} className="p-2 hover:bg-white rounded-xl transition-colors">
+              <button onClick={onClose} className="p-2 hover:bg-scrutiq-surface rounded-xl transition-colors">
                 <X className="size-5 text-scrutiq-muted" />
               </button>
             </div>
@@ -52,7 +52,7 @@ const DuplicateResolutionModal = ({
               <div className="grid grid-cols-2 gap-6">
                 {/* Keep Original Option */}
                 <div className="space-y-4">
-                  <div className="p-5 rounded-2xl border border-scrutiq-border bg-white space-y-3 shadow-sm">
+                  <div className="p-5 rounded-2xl border border-scrutiq-border bg-scrutiq-surface space-y-3 shadow-sm">
                     <FileText className="size-5 text-scrutiq-muted" />
                     <div>
                       <p className="text-[10px] font-black text-scrutiq-muted tracking-widest">ORIGINAL RECORD</p>

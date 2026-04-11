@@ -152,7 +152,7 @@ const CreateJobModal = ({
               </div>
               <button
                 onClick={onClose}
-                className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-white rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
+                className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-scrutiq-surface rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
               >
                 <X className="size-5" />
               </button>

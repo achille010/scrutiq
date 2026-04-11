@@ -51,7 +51,7 @@ export default function ResumeDrawer({ candidate, isOpen, onClose }: ResumeDrawe
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
-            className="relative w-full max-w-4xl max-h-full bg-white rounded-3xl shadow-2xl border border-scrutiq-border flex flex-col overflow-hidden"
+            className="relative w-full max-w-4xl max-h-full bg-scrutiq-surface rounded-3xl shadow-2xl border border-scrutiq-border flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="p-6 border-b border-scrutiq-border/50 flex items-start justify-between bg-scrutiq-bg shrink-0">
@@ -80,7 +80,7 @@ export default function ResumeDrawer({ candidate, isOpen, onClose }: ResumeDrawe
               </div>
               <button
                 onClick={onClose}
-                className="p-2 text-scrutiq-muted hover:text-scrutiq-dark hover:bg-white rounded-xl border border-transparent hover:border-scrutiq-border transition-all shrink-0"
+                className="p-2 text-scrutiq-muted hover:text-scrutiq-dark hover:bg-scrutiq-surface rounded-xl border border-transparent hover:border-scrutiq-border transition-all shrink-0"
               >
                 <X className="size-5" />
               </button>

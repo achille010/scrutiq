@@ -81,7 +81,7 @@ export default function JobsPage() {
       </header>
 
       {/* Filters & Search */}
-      <div className="flex flex-col md:flex-row items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/10">
+      <div className="flex flex-col md:flex-row items-center gap-4 bg-scrutiq-surface/5 p-4 rounded-2xl border border-white/10">
         <div className="relative flex-1 group w-full">
           <FontAwesomeIcon
             icon={faSearch}
@@ -90,10 +90,10 @@ export default function JobsPage() {
           <input
             type="text"
             placeholder="Search by title, skills or status..."
-            className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-brand-indigo/30 transition-all"
+            className="w-full bg-scrutiq-surface/5 border border-white/10 rounded-xl py-2.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-brand-indigo/30 transition-all"
           />
         </div>
-        <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm font-medium w-full md:w-auto justify-center">
+        <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-scrutiq-surface/5 border border-white/10 hover:bg-scrutiq-surface/10 transition-all text-sm font-medium w-full md:w-auto justify-center">
           <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
           More Filters
         </button>
@@ -128,7 +128,7 @@ export default function JobsPage() {
 
       {displayedJobs.length === 0 && (
         <div className="glass-card p-12 flex flex-col items-center justify-center text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-gray-600">
+          <div className="w-16 h-16 rounded-full bg-scrutiq-surface/5 flex items-center justify-center text-gray-600">
             <FontAwesomeIcon icon={faBriefcase} size="2x" />
           </div>
           <div>

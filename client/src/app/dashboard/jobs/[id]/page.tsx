@@ -449,7 +449,7 @@ export default function JobDetailPage() {
               <div className="space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-1">
                   <div className="flex items-center gap-4">
-                    <div className="relative group flex items-center bg-white border border-scrutiq-border rounded-xl px-4 py-2 w-80 focus-within:border-scrutiq-blue focus-within:ring-4 focus-within:ring-scrutiq-blue/5 transition-all">
+                    <div className="relative group flex items-center bg-scrutiq-surface border border-scrutiq-border rounded-xl px-4 py-2 w-80 focus-within:border-scrutiq-blue focus-within:ring-4 focus-within:ring-scrutiq-blue/5 transition-all">
                       <Search className="size-4 text-scrutiq-muted group-focus-within:text-scrutiq-blue" />
                       <input
                         type="text"
@@ -464,13 +464,13 @@ export default function JobDetailPage() {
                         setFilterScope(filterScope === "all" ? "duplicates" : "all");
                         if (filterScope === "all") notify("Showing only conflicts in this job.", "info");
                       }}
-                      className={`p-2.5 border rounded-xl transition-all flex items-center gap-2 text-[10px] font-bold tracking-widest ${filterScope === "duplicates" ? "bg-amber-500 text-white border-amber-500" : "bg-white border-scrutiq-border text-scrutiq-muted hover:bg-scrutiq-bg"}`}
+                      className={`p-2.5 border rounded-xl transition-all flex items-center gap-2 text-[10px] font-bold tracking-widest ${filterScope === "duplicates" ? "bg-amber-500 text-white border-amber-500" : "bg-scrutiq-surface border-scrutiq-border text-scrutiq-muted hover:bg-scrutiq-bg"}`}
                     >
                       <Filter className="size-4" />
                       <span>{filterScope === "duplicates" ? "Clear Filter" : "Duplicates"}</span>
                     </button>
 
-                    <div className="flex items-center gap-2 bg-white border border-scrutiq-border rounded-xl px-3 py-1.5 focus-within:border-scrutiq-blue transition-all">
+                    <div className="flex items-center gap-2 bg-scrutiq-surface border border-scrutiq-border rounded-xl px-3 py-1.5 focus-within:border-scrutiq-blue transition-all">
                       <span className="text-[10px] font-black uppercase text-scrutiq-muted tracking-widest">Show Top:</span>
                       <select 
                         value={typeof rankingLimit === "number" && ![5, 10, 15, 25, 50].includes(rankingLimit) ? "custom" : rankingLimit}
@@ -573,7 +573,7 @@ export default function JobDetailPage() {
                               className="hover:bg-scrutiq-bg/30 transition-all group"
                             >
                               <td className="px-6 py-6">
-                                <span className={`size-8 rounded-lg flex items-center justify-center font-bold text-xs ${idx === 0 ? "bg-scrutiq-blue text-white shadow-lg shadow-scrutiq-blue/20" : "bg-white text-scrutiq-muted border border-scrutiq-border"}`}>
+                                  <span className={`size-8 rounded-lg flex items-center justify-center font-bold text-xs ${idx === 0 ? "bg-scrutiq-blue text-white shadow-lg shadow-scrutiq-blue/20" : "bg-scrutiq-surface text-scrutiq-muted border border-scrutiq-border"}`}>
                                   #{idx + 1}
                                 </span>
                               </td>
@@ -598,7 +598,7 @@ export default function JobDetailPage() {
                                         });
                                         setIsDuplicateModalOpen(true);
                                       }}
-                                      className="px-1.5 py-0.5 rounded-lg text-[7px] font-black uppercase bg-amber-50 text-amber-600 border border-amber-100 flex items-center gap-1 leading-none hover:bg-amber-100 transition-colors"
+                                      className="px-1.5 py-0.5 rounded-lg text-[7px] font-black uppercase bg-amber-500/10 text-amber-500 border border-amber-500/20 flex items-center gap-1 leading-none hover:bg-amber-500/20 transition-colors"
                                     >
                                       <AlertTriangle className="size-2" />
                                       DUPE
@@ -615,7 +615,7 @@ export default function JobDetailPage() {
                                   <span className={`text-sm font-black ${rank.matchScore > 80 ? "text-emerald-500" : rank.matchScore > 60 ? "text-amber-500" : "text-rose-500"}`}>
                                     {rank.matchScore}%
                                   </span>
-                                  <span className="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-white border border-scrutiq-border text-scrutiq-muted">
+                                  <span className="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-scrutiq-bg border border-scrutiq-border text-scrutiq-muted">
                                     {rank.finalRecommendation || "Fit"}
                                   </span>
                                 </div>
@@ -633,7 +633,7 @@ export default function JobDetailPage() {
                                     setSelectedResult(rank);
                                     setShowDetailModal(true);
                                   }}
-                                  className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-white rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
+                                  className="p-2 text-scrutiq-muted hover:text-scrutiq-blue hover:bg-scrutiq-surface rounded-xl border border-transparent hover:border-scrutiq-border transition-all"
                                   title="Expand AI Synthesis"
                                 >
                                   <ExternalLink className="size-4" />
@@ -698,7 +698,7 @@ export default function JobDetailPage() {
                                         rank.candidateName,
                                       )
                                     }
-                                    className="p-1.5 text-scrutiq-muted hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all border border-transparent hover:border-rose-100"
+                                    className="p-1.5 text-scrutiq-muted hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all border border-transparent hover:border-rose-500/20"
                                     title="Delete Result"
                                   >
                                     <Trash2 className="size-3.5" />

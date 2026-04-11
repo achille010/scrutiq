@@ -58,7 +58,7 @@ export default function AuditLogModal({ userId, isOpen, onClose }: AuditLogModal
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-scrutiq-border"
+            className="relative w-full max-w-2xl bg-scrutiq-surface rounded-3xl shadow-2xl overflow-hidden border border-scrutiq-border"
           >
             <div className="p-8 border-b border-scrutiq-border flex items-center justify-between bg-scrutiq-bg/30">
               <div className="flex items-center gap-4">
@@ -72,13 +72,13 @@ export default function AuditLogModal({ userId, isOpen, onClose }: AuditLogModal
               </div>
               <button 
                 onClick={onClose}
-                className="p-2 hover:bg-white rounded-xl transition-all border border-transparent hover:border-scrutiq-border"
+                className="p-2 hover:bg-scrutiq-surface rounded-xl transition-all border border-transparent hover:border-scrutiq-border"
               >
                 <X className="size-5 text-scrutiq-muted" />
               </button>
             </div>
 
-            <div className="p-8 max-h-[60vh] overflow-y-auto space-y-4">
+            <div className="p-8 max-h-[60vh] overflow-y-auto space-y-4 bg-scrutiq-bg shadow-inner">
               {isLoading ? (
                 <div className="py-20 text-center space-y-3">
                   <Clock className="size-8 text-scrutiq-blue animate-spin mx-auto" />
@@ -90,20 +90,20 @@ export default function AuditLogModal({ userId, isOpen, onClose }: AuditLogModal
                   <p className="text-sm font-bold text-scrutiq-muted">No security logs recorded yet.</p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {logs.map((log) => (
-                    <div key={log._id} className="flex items-start gap-4 p-4 rounded-2xl border border-scrutiq-border/50 hover:bg-scrutiq-bg/30 transition-all group">
-                       <div className="size-10 rounded-xl bg-white border border-scrutiq-border/50 flex items-center justify-center shrink-0 shadow-sm group-hover:border-scrutiq-blue/20 transition-all">
+                    <div key={log._id} className="flex items-start gap-4 p-5 rounded-2xl border border-scrutiq-border/30 bg-scrutiq-surface hover:bg-scrutiq-surface/80 hover:scale-[1.01] transition-all group">
+                       <div className="size-10 rounded-xl bg-scrutiq-bg border border-scrutiq-border/30 flex items-center justify-center shrink-0 shadow-sm transition-all">
                           <CategoryIcon category={log.category} />
                        </div>
                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1">
-                             <span className="text-[10px] font-black text-scrutiq-dark tracking-wide uppercase">{log.action.replace('_', ' ')}</span>
-                             <span className="text-[10px] font-bold text-scrutiq-muted tabular-nums">
+                          <div className="flex items-center justify-between mb-1.5">
+                             <span className="text-[10px] font-black text-white px-2 py-0.5 bg-scrutiq-blue/20 rounded-md tracking-wide uppercase border border-scrutiq-blue/30">{log.action.replace('_', ' ')}</span>
+                             <span className="text-[10px] font-bold text-scrutiq-muted tabular-nums opacity-60">
                                {new Date(log.createdAt).toLocaleString()}
                              </span>
                           </div>
-                          <p className="text-xs text-scrutiq-muted font-medium leading-relaxed">
+                          <p className="text-[13px] text-white font-medium leading-relaxed opacity-90">
                             {log.details}
                           </p>
                        </div>
@@ -112,6 +112,7 @@ export default function AuditLogModal({ userId, isOpen, onClose }: AuditLogModal
                 </div>
               )}
             </div>
+
 
             <div className="p-6 bg-scrutiq-bg/30 border-t border-scrutiq-border flex items-center justify-between">
                <p className="text-[9px] font-bold text-scrutiq-muted max-w-[340px] uppercase tracking-wider">

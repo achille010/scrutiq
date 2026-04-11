@@ -44,13 +44,15 @@ export default function LandingPage() {
           >
             <div className="relative group">
               <div className="absolute -inset-2 bg-scrutiq-blue/20 rounded-2xl blur-xl group-hover:bg-scrutiq-blue/30 transition-all duration-500" />
-              <div className="relative size-20 bg-white rounded-2xl shadow-2xl flex items-center justify-center border border-scrutiq-border overflow-hidden">
+              <div className="relative size-20 bg-scrutiq-surface rounded-2xl shadow-2xl flex items-center justify-center border border-scrutiq-border overflow-hidden">
                 <img 
                   src="/Untitled_design-removebg-preview.svg" 
                   alt="Scrutiq Logo" 
                   className="size-14 object-contain group-hover:scale-110 transition-transform duration-500"
+                  style={{ filter: "var(--stq-logo-filter)" }}
                 />
               </div>
+
             </div>
             <div className="text-left">
               <h2 className="text-3xl font-black text-scrutiq-dark tracking-tighter leading-none">
@@ -128,7 +130,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 + (i * 0.1) }}
-              className="bg-white/50 backdrop-blur-xl border border-white p-8 rounded-[2rem] shadow-xl shadow-scrutiq-blue/5 flex flex-col items-center text-center group hover:bg-white transition-all duration-500"
+              className="bg-scrutiq-surface/50 backdrop-blur-xl border border-scrutiq-border p-8 rounded-[2rem] shadow-xl shadow-scrutiq-blue/5 flex flex-col items-center text-center group hover:bg-scrutiq-surface transition-all duration-500"
             >
               <div className="size-14 rounded-2xl bg-scrutiq-bg border border-scrutiq-border flex items-center justify-center text-scrutiq-blue mb-6 group-hover:scale-110 group-hover:bg-scrutiq-blue group-hover:text-white transition-all duration-500">
                 <feature.icon className="size-7" />
@@ -144,11 +146,17 @@ export default function LandingPage() {
 
       <footer className="mt-32 w-full max-w-5xl border-t border-scrutiq-border/30 pt-12 pb-12 flex flex-col md:flex-row items-center justify-between gap-6 px-4">
         <div className="flex items-center gap-3">
-          <img src="/Untitled_design-removebg-preview.svg" alt="Scrutiq" className="size-8 opacity-50" />
+          <img 
+            src="/Untitled_design-removebg-preview.svg" 
+            alt="Scrutiq" 
+            className="size-8 opacity-50" 
+            style={{ filter: "var(--stq-logo-filter)" }} 
+          />
           <p className="text-[10px] font-black tracking-[0.2em] text-scrutiq-muted/40 uppercase">
              Scrutiq Intelligence &copy; 2026
           </p>
         </div>
+
         <div className="flex gap-8">
           {['Privacy', 'Legal', 'Security', 'Status'].map(item => (
             <a key={item} href="#" className="text-[10px] font-black tracking-widest text-scrutiq-muted/30 hover:text-scrutiq-blue transition-colors uppercase">

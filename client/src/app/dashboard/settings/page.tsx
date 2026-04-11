@@ -10,16 +10,18 @@ import {
   Save, 
   Bell,
   Palette,
-  Eye,
-  EyeOff,
+  Moon,
+  Sun,
   Cloud
 } from "lucide-react";
 import { toast } from "@/lib/toast";
 import api from "@/lib/api";
 import { motion } from "framer-motion";
 import AuditLogModal from "@/components/settings/AuditLogModal";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function SettingsPage() {
+  const { theme, toggleTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -30,6 +32,11 @@ export default function SettingsPage() {
     companyName: "",
   });
 
+  const [notificationPrefs, setNotificationPrefs] = useState({
+    candidateAlerts: true,
+    screeningCompletions: true,
+  });
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedUser = localStorage.getItem("user");
@@ -37,36 +44,33 @@ export default function SettingsPage() {
         const parsed = JSON.parse(storedUser);
         setUser(parsed);
         
-        // Always fetch latest data to ensure email and company are synced
-        if (parsed.id) {
-          api.get(`/auth/profile/${parsed.id}`)
-            .then(res => {
-              if (res.data?.data) {
-                const fresh = { ...parsed, ...res.data.data };
-                localStorage.setItem("user", JSON.stringify(fresh));
-                setUser(fresh);
-                setProfileData({
-                  fullName: fresh.name || "",
-                  companyName: fresh.company || "",
-                });
-              }
-            })
-            .catch(err => {
-              if (err.response?.status === 404) {
-                 // Severe session corruption or legacy ID — Force repair
-                 console.warn("Incompatible session detected. Initiating repair...");
-                 localStorage.removeItem("user");
-                 window.location.href = "/login";
-                 return;
-              }
-              console.error("Profile refresh fault:", err);
-              // Fallback to local data
-              setProfileData({
-                fullName: parsed.name || "",
-                companyName: parsed.company || "",
-              });
-            });
+        // Load initial prefs from user object
+        if (parsed.notifications) {
+          setNotificationPrefs(parsed.notifications);
         }
+
+        api.get(`/auth/profile/${parsed.id}`)
+          .then(res => {
+            if (res.data?.data) {
+              const fresh = { ...parsed, ...res.data.data };
+              localStorage.setItem("user", JSON.stringify(fresh));
+              setUser(fresh);
+              setProfileData({
+                fullName: fresh.name || "",
+                companyName: fresh.company || "",
+              });
+              if (fresh.notifications) {
+                setNotificationPrefs(fresh.notifications);
+              }
+            }
+          })
+          .catch(err => {
+            console.error("Profile refresh fault:", err);
+            setProfileData({
+              fullName: parsed.name || "",
+              companyName: parsed.company || "",
+            });
+          });
       }
       setIsLoading(false);
     }
@@ -78,26 +82,35 @@ export default function SettingsPage() {
 
     setIsSaving(true);
     try {
-      const response = await api.put(`/auth/profile/${user.id}`, profileData);
+      const response = await api.put(`/auth/profile/${user.id}`, {
+        ...profileData,
+        notifications: notificationPrefs
+      });
       
-      // Sync local storage
       const updatedUser = {
         ...user,
         name: response.data.data.name,
-        company: response.data.data.company
+        company: response.data.data.company,
+        notifications: response.data.data.notifications
       };
+      
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setUser(updatedUser);
-      
-      // Dispatch custom event for real-time header sync
       window.dispatchEvent(new Event("user-profile-updated"));
       
-      toast.success("Profile preferences synchronized successfully.");
+      toast.success("Account preferences synchronized successfully.");
     } catch (error) {
       toast.error("Failed to update portal preferences.");
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const toggleNotification = (key: keyof typeof notificationPrefs) => {
+    setNotificationPrefs(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
   };
 
   if (isLoading) {
@@ -110,19 +123,19 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-10 animate-in fade-in duration-700 pb-20">
+    <div className="space-y-10 animate-in fade-in duration-700 pb-20 font-jakarta">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between bg-scrutiq-surface p-4 sm:p-6 md:p-8 rounded-2xl border border-scrutiq-border shadow-sm gap-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between bg-scrutiq-surface p-6 sm:p-8 rounded-2xl border border-scrutiq-border shadow-sm gap-6">
         <div className="space-y-2">
           <h1 className="text-3xl md:text-4xl font-black text-scrutiq-dark tracking-tighter">Settings</h1>
           <p className="text-xs sm:text-sm font-bold text-scrutiq-muted tracking-wide max-w-lg">
-            Manage your profile, notification preferences, and account settings.
+            Manage your profile, notification preferences, and account security.
           </p>
         </div>
         <div className="flex items-center gap-3">
            <button 
              onClick={() => window.location.reload()}
-             className="p-4 rounded-xl border border-scrutiq-border bg-white transition-all hover:bg-scrutiq-bg"
+             className="p-4 rounded-xl border border-scrutiq-border bg-scrutiq-surface transition-all hover:bg-scrutiq-bg"
            >
              <RefreshCcw className="size-5 text-scrutiq-muted" />
            </button>
@@ -139,16 +152,15 @@ export default function SettingsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Profile Section */}
         <div className="lg:col-span-2 space-y-8">
            <section className="admin-card p-6 sm:p-10 bg-scrutiq-surface space-y-8">
               <div className="flex items-center gap-4 border-b border-scrutiq-border/50 pb-6">
                  <div className="size-16 rounded-3xl bg-scrutiq-blue flex items-center justify-center text-white text-3xl font-black shadow-xl shadow-scrutiq-blue/20">
-                   {profileData.fullName.charAt(0) || "U"}
+                    <User className="size-8" />
                  </div>
                  <div>
-                    <h2 className="text-2xl font-black text-scrutiq-dark tracking-tight">Your profile</h2>
-                    <p className="text-xs font-bold text-scrutiq-muted tracking-widest leading-none mt-1">Update your name and company</p>
+                    <h2 className="text-2xl font-black text-scrutiq-dark tracking-tight">Recruiter profile</h2>
+                    <p className="text-xs font-bold text-scrutiq-muted tracking-widest leading-none mt-1 uppercase">Identify yourself on the platform</p>
                  </div>
               </div>
 
@@ -182,7 +194,7 @@ export default function SettingsPage() {
                  </div>
 
                  <div className="space-y-2 md:col-span-2">
-                    <label className="text-[10px] font-black text-scrutiq-muted tracking-widest uppercase ml-1">Company name</label>
+                    <label className="text-[10px] font-black text-scrutiq-muted tracking-widest uppercase ml-1">Company information</label>
                     <div className="relative group">
                        <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-scrutiq-muted group-focus-within:text-scrutiq-blue transition-colors" />
                        <input 
@@ -198,130 +210,92 @@ export default function SettingsPage() {
               </form>
            </section>
 
-           <section className="admin-card p-6 sm:p-10 bg-scrutiq-surface space-y-8 hover-lift">
+           <section className="admin-card p-6 sm:p-10 bg-scrutiq-surface space-y-8">
               <div className="flex items-center gap-4 border-b border-scrutiq-border/50 pb-6">
                  <div className="size-12 rounded-2xl bg-scrutiq-bg border border-scrutiq-border flex items-center justify-center text-scrutiq-blue">
-                   <Bell className="size-6" />
+                    <Bell className="size-6" />
                  </div>
                  <div>
-                    <h2 className="text-xl font-black text-scrutiq-dark tracking-tight">Notifications</h2>
-                    <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest uppercase mt-1">Choose what you get notified about</p>
+                    <h2 className="text-xl font-black text-scrutiq-dark tracking-tight">Notification preferences</h2>
+                    <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest uppercase mt-1">Control your operational awareness</p>
                  </div>
               </div>
 
               <div className="space-y-4">
-                 {[
-                   { label: "New candidate alerts", desc: "Get notified when a new resume is uploaded." },
-                   { label: "Screening completions", desc: "Get notified when a screening finishes." },
-                 ].map((opt, i) => (
-                   <div key={i} className="flex items-center justify-between p-4 rounded-2xl hover:bg-scrutiq-bg transition-colors">
-                      <div className="space-y-1">
-                         <p className="text-sm font-black text-scrutiq-dark tracking-tight">{opt.label}</p>
-                         <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest">{opt.desc}</p>
-                      </div>
-                      <div className="w-12 h-6 bg-scrutiq-blue rounded-full relative">
-                         <div className="absolute top-1 right-1 size-4 bg-white rounded-full shadow-sm" />
-                       </div>
-                   </div>
-                 ))}
+                 <div className="flex items-center justify-between p-4 rounded-2xl hover:bg-scrutiq-bg transition-colors">
+                    <div className="space-y-1">
+                       <p className="text-sm font-black text-scrutiq-dark tracking-tight">New candidate alerts</p>
+                       <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest">Get notified when a new resume is uploaded.</p>
+                    </div>
+                    <button 
+                      type="button"
+                      onClick={() => toggleNotification('candidateAlerts')}
+                      className={`w-12 h-6 rounded-full relative transition-all duration-300 ${notificationPrefs.candidateAlerts ? 'bg-scrutiq-blue' : 'bg-scrutiq-muted/20'}`}
+                    >
+                      <div className={`absolute top-1 size-4 bg-white rounded-full shadow-sm transition-all duration-300 ${notificationPrefs.candidateAlerts ? 'right-1' : 'left-1'}`} />
+                    </button>
+                 </div>
+
+                 <div className="flex items-center justify-between p-4 rounded-2xl hover:bg-scrutiq-bg transition-colors">
+                    <div className="space-y-1">
+                       <p className="text-sm font-black text-scrutiq-dark tracking-tight">Screening completions</p>
+                       <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest">Get notified when an AI screening analysis finishes.</p>
+                    </div>
+                    <button 
+                      type="button"
+                      onClick={() => toggleNotification('screeningCompletions')}
+                      className={`w-12 h-6 rounded-full relative transition-all duration-300 ${notificationPrefs.screeningCompletions ? 'bg-scrutiq-blue' : 'bg-scrutiq-muted/20'}`}
+                    >
+                      <div className={`absolute top-1 size-4 bg-white rounded-full shadow-sm transition-all duration-300 ${notificationPrefs.screeningCompletions ? 'right-1' : 'left-1'}`} />
+                    </button>
+                 </div>
               </div>
            </section>
 
-           {/* Danger Zone */}
-           <section className="admin-card p-8 md:p-10 bg-white border-2 border-rose-500/20 space-y-6 relative overflow-hidden group hover:border-rose-500/40 transition-colors">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none group-hover:bg-rose-500/10 transition-colors" />
-              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-rose-100/50">
-                <div className="space-y-1">
-                  <h2 className="text-xl font-black text-rose-600 tracking-tight">Danger Zone</h2>
-                  <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest uppercase">
-                    Irreversible administrative actions
-                  </p>
-                </div>
+           <section className="admin-card p-6 sm:p-10 bg-scrutiq-surface space-y-8">
+              <div className="flex items-center gap-4 border-b border-scrutiq-border/50 pb-6">
+                 <div className="size-12 rounded-2xl bg-scrutiq-bg border border-scrutiq-border flex items-center justify-center text-scrutiq-blue">
+                    <Palette className="size-6" />
+                 </div>
+                 <div>
+                    <h2 className="text-xl font-black text-scrutiq-dark tracking-tight">Portal appearance</h2>
+                    <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest uppercase mt-1">Personalize your visual environment</p>
+                 </div>
               </div>
-              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                  <h3 className="text-sm font-black text-scrutiq-dark tracking-tight">Delete account</h3>
-                  <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest leading-relaxed max-w-sm mt-1">
-                    Once you delete your account, there is no going back. All candidates, jobs, and screening results will be permanently deleted.
-                  </p>
+              <div className="flex items-center justify-between p-4 rounded-2xl hover:bg-scrutiq-bg transition-colors">
+                <div className="space-y-1">
+                  <p className="text-sm font-black text-scrutiq-dark tracking-tight">Dark mode theme</p>
+                  <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest uppercase tracking-widest">Optimize for low-light screening</p>
                 </div>
-                <button
-                  onClick={async () => {
-                    if (window.confirm("Are you absolutely sure? This action is completely irreversible.")) {
-                      try {
-                        setIsSaving(true);
-                        await api.delete(`/auth/profile/${user.id}`);
-                        localStorage.removeItem("user");
-                        localStorage.removeItem("token");
-                        toast.success("Account deleted successfully.");
-                        window.location.href = "/login";
-                      } catch (error) {
-                        toast.error("Failed to delete account. Please try again later.");
-                        setIsSaving(false);
-                      }
-                    }
-                  }}
-                  className="shrink-0 px-6 py-3 bg-rose-50 text-rose-600 border border-rose-200 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-rose-600 hover:text-white hover:border-rose-600 hover:shadow-lg hover:shadow-rose-500/20 transition-all font-jakarta"
+                <button 
+                  type="button"
+                  onClick={toggleTheme}
+                  className={`w-14 h-7 rounded-full relative transition-all duration-300 ${theme === 'dark' ? 'bg-scrutiq-blue' : 'bg-scrutiq-muted/20'}`}
                 >
-                  Delete account
+                  <div className={`absolute top-1 size-5 rounded-full shadow-sm flex items-center justify-center transition-all duration-300 ${theme === 'dark' ? 'left-8 bg-scrutiq-surface' : 'left-1 bg-scrutiq-surface'}`}>
+                    {theme === 'dark' ? <Moon className="size-3 text-scrutiq-blue" /> : <Sun className="size-3 text-amber-500" />}
+                  </div>
                 </button>
               </div>
            </section>
         </div>
 
-        {/* Sidebar Settings */}
         <div className="space-y-8">
-           <div className="admin-card p-8 bg-scrutiq-blue/5 border-scrutiq-blue/20 flex flex-col items-center text-center space-y-6">
-              <div className="size-20 rounded-3xl bg-white flex items-center justify-center shadow-lg shadow-scrutiq-blue/5 border border-scrutiq-border">
+           <div className="admin-card p-8 bg-scrutiq-blue/5 border-primary/20 flex flex-col items-center text-center space-y-6">
+              <div className="size-20 rounded-3xl bg-scrutiq-surface flex items-center justify-center shadow-lg shadow-scrutiq-blue/5 border border-scrutiq-border">
                  <ShieldCheck className="size-10 text-scrutiq-blue" />
               </div>
               <div className="space-y-2">
-                 <h3 className="text-lg font-black text-scrutiq-dark tracking-tight">Secure session</h3>
+                 <h3 className="text-lg font-black text-scrutiq-dark tracking-tight">Security & Governance</h3>
                  <p className="text-[10px] font-bold text-scrutiq-muted tracking-widest leading-relaxed">
-                   Your session is secure and encrypted.
+                   Review your administrative footprint.
                  </p>
               </div>
               <button 
                 onClick={() => setIsAuditModalOpen(true)}
-                className="text-[10px] font-black text-scrutiq-blue tracking-widest uppercase hover:underline"
+                className="btn-primary w-full shadow-lg shadow-scrutiq-blue/10"
               >
-                View audit logs
-              </button>
-           </div>
-
-           <div className="admin-card p-8 bg-white space-y-6">
-              <div className="flex items-center gap-3">
-                 <Cloud className="size-4 text-scrutiq-blue" />
-                 <span className="text-xs font-black text-scrutiq-dark tracking-widest uppercase">System status</span>
-              </div>
-              <div className="space-y-4">
-                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-scrutiq-muted tracking-widest">Environment</span>
-                    <span className="text-[10px] font-black text-emerald-600 uppercase">Production</span>
-                 </div>
-                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-scrutiq-muted tracking-widest">Ai model</span>
-                    <span className="text-[10px] font-black text-scrutiq-blue uppercase">Gemini 1.5 Pro</span>
-                 </div>
-                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-scrutiq-muted tracking-widest">Region</span>
-                    <span className="text-[10px] font-black text-scrutiq-dark uppercase">East Africa</span>
-                 </div>
-              </div>
-           </div>
-
-           <div className="admin-card p-8 bg-scrutiq-dark text-white space-y-6">
-              <div className="space-y-2">
-                 <h3 className="text-base font-black tracking-tight">Activity trail</h3>
-                 <p className="text-[10px] font-bold text-scrutiq-muted/80 tracking-widest leading-relaxed">
-                   See all actions taken on your account.
-                 </p>
-              </div>
-              <button 
-                onClick={() => setIsAuditModalOpen(true)}
-                className="btn-primary w-full bg-white text-scrutiq-dark border-white hover:bg-scrutiq-bg h-10 px-0"
-              >
-                View Logs
+                View Audit Trail
               </button>
            </div>
         </div>

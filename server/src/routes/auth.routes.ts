@@ -29,4 +29,10 @@ router.get("/profile/:id/logs", authController.getAuditLogs);
 // Delete Recruiter Profile
 router.delete("/profile/:id", authController.deleteProfile);
 
+// Password Recovery Flow
+router.post("/forgot-password", authController.forgotPassword);
+router.post("/verify-reset-pin", authController.verifyResetPin);
+router.post("/reset-password", authController.resetPassword);
+
 export default router;
+
