@@ -92,18 +92,22 @@ export default function AuditLogModal({ userId, isOpen, onClose }: AuditLogModal
               ) : (
                 <div className="space-y-4">
                   {logs.map((log) => (
-                    <div key={log._id} className="flex items-start gap-4 p-5 rounded-2xl border border-scrutiq-border/30 bg-scrutiq-surface hover:bg-scrutiq-surface/80 hover:scale-[1.01] transition-all group">
-                       <div className="size-10 rounded-xl bg-scrutiq-bg border border-scrutiq-border/30 flex items-center justify-center shrink-0 shadow-sm transition-all">
+                    <div key={log._id} className="flex items-start gap-4 p-5 rounded-2xl border border-gray-100 bg-white shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 group relative overflow-hidden">
+                       <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                       <div className="size-10 rounded-xl bg-blue-50 border border-blue-100/50 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-110 transition-transform duration-300 text-blue-600">
                           <CategoryIcon category={log.category} />
                        </div>
                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1.5">
-                             <span className="text-[10px] font-black text-white px-2 py-0.5 bg-scrutiq-blue/20 rounded-md tracking-wide uppercase border border-scrutiq-blue/30">{log.action.replace('_', ' ')}</span>
-                             <span className="text-[10px] font-bold text-scrutiq-muted tabular-nums opacity-60">
-                               {new Date(log.createdAt).toLocaleString()}
+                          <div className="flex items-center justify-between mb-2">
+                             <div className="flex items-center gap-2">
+                               <span className="text-[10px] font-bold text-blue-700 px-2.5 py-1 bg-blue-50 rounded-md tracking-widest uppercase border border-blue-200/50 shadow-sm">{log.action.replace('_', ' ')}</span>
+                             </div>
+                             <span className="text-[12px] font-medium text-gray-500 tabular-nums flex items-center gap-1.5">
+                               <Clock className="size-3.5 opacity-60" />
+                               {new Date(log.createdAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
                              </span>
                           </div>
-                          <p className="text-[13px] text-white font-medium leading-relaxed opacity-90">
+                          <p className="text-[14px] text-gray-700 font-medium leading-relaxed bg-gray-50 px-3 py-2.5 rounded-lg border border-gray-100/50">
                             {log.details}
                           </p>
                        </div>
