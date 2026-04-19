@@ -47,7 +47,7 @@ class ApplicantsController {
       ]);
 
       const totalResults = [...fileResults, ...urlResults];
-      const duplicateCount = totalResults.filter(r => r.isDuplicate).length;
+      const duplicateCount = totalResults.filter(r => r && r.isDuplicate).length;
       const newCount = totalResults.length - duplicateCount;
 
       return res.status(201).json({

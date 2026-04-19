@@ -6,6 +6,7 @@ import { NotificationProvider } from "@/context/NotificationContext";
 import { ChatProvider } from "@/context/ChatContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import KeepAlive from "./layout/KeepAlive";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const googleClientId = "325997258384-sh787sh787sh787sh787.apps.googleusercontent.com"; // From .env
@@ -16,6 +17,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <ThemeProvider>
           <NotificationProvider>
             <ChatProvider>
+              <KeepAlive />
               {children}
             </ChatProvider>
           </NotificationProvider>
@@ -24,5 +26,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     </GoogleOAuthProvider>
   );
 }
+
 
 
