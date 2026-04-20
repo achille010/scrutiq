@@ -1,1 +1,1 @@
-export declare const swaggerSpec: any;
+export declare const swaggerSpec: object;
