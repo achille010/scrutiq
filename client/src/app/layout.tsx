@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "../styles/globals.css";
 import { Toaster } from "sonner";
 import Providers from "@/components/Providers";
+import {Analytics} from "@vercel/analytics/react"
 
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ["latin"], 
@@ -29,6 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <>
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className={`${jakarta.variable} font-jakarta antialiased text-scrutiq-muted bg-scrutiq-bg selection:bg-scrutiq-blue/20 selection:text-scrutiq-blue`}>
         <Providers>
@@ -39,7 +41,9 @@ export default function RootLayout({
           />
 
         </Providers>
+        <Analytics />
       </body>
     </html>
+    </>
   );
 }
