@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType, Tool, Content, Part } from "@google/generative-ai";
 import dotenv from "dotenv";
 import projectsService from "./jobs.service";
 import applicantsService from "./applicants.service";
@@ -37,16 +37,16 @@ const CHAT_CONFIG = {
   tools: [{
     functionDeclarations: [
       { name: "list_jobs", description: "Get a list of all active jobs." },
-      { name: "delete_job", description: "Permanently delete a job posting.", parameters: { type: "object", properties: { jobId: { type: "string" } }, required: ["jobId"] } },
+      { name: "delete_job", description: "Permanently delete a job posting.", parameters: { type: SchemaType.OBJECT, properties: { jobId: { type: SchemaType.STRING } }, required: ["jobId"] } },
       { name: "list_applicants", description: "Get a summary list of all applicants." },
-      { name: "get_applicant_details", description: "Fetch the full technical profile and metadata of a specific applicant.", parameters: { type: "object", properties: { applicantId: { type: "string" } }, required: ["applicantId"] } },
-      { name: "delete_applicant", description: "Permanently remove an applicant from the system.", parameters: { type: "object", properties: { applicantId: { type: "string" } }, required: ["applicantId"] } },
-      { name: "get_rankings", description: "Get ranked list for a job.", parameters: { type: "object", properties: { jobId: { type: "string" } }, required: ["jobId"] } },
-      { name: "trigger_screening", description: "Run AI assessment.", parameters: { type: "object", properties: { jobId: { type: "string" }, candidateIds: { type: "array", items: { type: "string" } } }, required: ["jobId", "candidateIds"] } },
-      { name: "update_judging_bases", description: "Tighten/Loosen criteria.", parameters: { type: "object", properties: { jobId: { type: "string" }, instructions: { type: "string" } }, required: ["jobId", "instructions"] } },
+      { name: "get_applicant_details", description: "Fetch the full technical profile and metadata of a specific applicant.", parameters: { type: SchemaType.OBJECT, properties: { applicantId: { type: SchemaType.STRING } }, required: ["applicantId"] } },
+      { name: "delete_applicant", description: "Permanently remove an applicant from the system.", parameters: { type: SchemaType.OBJECT, properties: { applicantId: { type: SchemaType.STRING } }, required: ["applicantId"] } },
+      { name: "get_rankings", description: "Get ranked list for a job.", parameters: { type: SchemaType.OBJECT, properties: { jobId: { type: SchemaType.STRING } }, required: ["jobId"] } },
+      { name: "trigger_screening", description: "Run AI assessment.", parameters: { type: SchemaType.OBJECT, properties: { jobId: { type: SchemaType.STRING }, candidateIds: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } } }, required: ["jobId", "candidateIds"] } },
+      { name: "update_judging_bases", description: "Tighten/Loosen criteria.", parameters: { type: SchemaType.OBJECT, properties: { jobId: { type: SchemaType.STRING }, instructions: { type: SchemaType.STRING } }, required: ["jobId", "instructions"] } },
       { name: "get_system_overview", description: "Fetch global aggregates: total applicants, jobs, and screening counts." },
     ],
-  }],
+  }] as Tool[],
   safetySettings: [
     { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
     { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
@@ -122,34 +122,37 @@ export class ChatService {
     });
 
     try {
-      const contents = [{ role: "user", parts: [{ text: prompt }] }];
+      const contents: Content[] = [{ role: "user", parts: [{ text: prompt }] }];
       let result = await model.generateContent({ contents });
       let response = result.response;
 
       let iterations = 0;
-      while (response.functionCalls()?.length > 0 && iterations < 3) {
+      while (response.functionCalls() && response.functionCalls()!.length > 0 && iterations < 3) {
         iterations++;
         const modelTurn = response.candidates![0].content;
         contents.push(modelTurn);
 
         const calls = response.functionCalls();
-        const functionParts = [];
+        if (!calls) break;
+
+        const functionParts: Part[] = [];
 
         for (const call of calls) {
           console.log(`[CHAT_EXEC] Op: ${call.name}`);
           let toolOutput: any;
+          const args: any = call.args;
           try {
             switch (call.name) {
               case "list_jobs": toolOutput = await projectsService.getAllJobs(ownerId); break;
-              case "delete_job": toolOutput = await projectsService.deleteJob(call.args.jobId); break;
+              case "delete_job": toolOutput = await projectsService.deleteJob(args.jobId); break;
               case "list_applicants": toolOutput = await applicantsService.getAllApplicants(ownerId); break;
-              case "get_applicant_details": toolOutput = await applicantsService.getApplicantById(call.args.applicantId); break;
-              case "delete_applicant": toolOutput = await applicantsService.deleteApplicant(call.args.applicantId); break;
-              case "get_rankings": toolOutput = await screeningService.getRankingsByJob(call.args.jobId); break;
-              case "trigger_screening": toolOutput = await screeningService.executeScreening(call.args.jobId, call.args.candidateIds, ownerId); break;
+              case "get_applicant_details": toolOutput = await applicantsService.getApplicantById(args.applicantId); break;
+              case "delete_applicant": toolOutput = await applicantsService.deleteApplicant(args.applicantId); break;
+              case "get_rankings": toolOutput = await screeningService.getRankingsByJob(args.jobId); break;
+              case "trigger_screening": toolOutput = await screeningService.executeScreening(args.jobId, args.candidateIds, ownerId); break;
               case "update_judging_bases":
-                const job = await Job.findById(call.args.jobId);
-                if (job) { job.screeningCriteria = call.args.instructions; await job.save(); toolOutput = { success: true }; }
+                const job = await Job.findById(args.jobId);
+                if (job) { job.screeningCriteria = args.instructions; await job.save(); toolOutput = { success: true }; }
                 break;
               case "get_system_overview":
                 const jCount = await Job.countDocuments(ownerId ? { ownerId } : {});
@@ -161,10 +164,10 @@ export class ChatService {
 
           functionParts.push({
             functionResponse: { name: call.name, response: { content: JSON.stringify(toolOutput) } },
-          });
+          } as Part);
         }
 
-        contents.push({ role: "user", parts: functionParts });
+        contents.push({ role: "function", parts: functionParts });
         const nextResult = await model.generateContent({ contents });
         response = nextResult.response;
       }
