@@ -24,11 +24,27 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false
 }));
 app.use(morgan("dev"));
+
+// AFTER
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://scrutiq-v1.vercel.app",
+  "https://scrutiq-phi.vercel.app",
+  process.env.CLIENT_URL,
+].filter(Boolean) as string[];
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked: ${origin}`));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   credentials: true
 }));
+app.options("*", cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/uploads", (req, res, next) => {
