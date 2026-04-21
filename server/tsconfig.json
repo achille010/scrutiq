@@ -2,8 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "CommonJS",
-    "moduleResolution": "node10",
-    "baseUrl": "./src",
+    "moduleResolution": "bundler",
     "outDir": "./dist",
     "rootDir": "./src",
     "esModuleInterop": true,
@@ -12,8 +11,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "sourceMap": true,
-    "declaration": true,
-    "ignoreDeprecations": "5.0"
+    "declaration": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.test.ts"]
