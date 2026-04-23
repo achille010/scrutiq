@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "npm run migrate --prefix server",
-    "frontend": "cd client && npm start",
-    "backend": "cd server && npm run dev",
+    "frontend": "npm run dev --prefix client",
+    "backend": "npm run dev --prefix server",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\""
   },
   "repository": {
