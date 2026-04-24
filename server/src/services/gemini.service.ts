@@ -88,7 +88,18 @@ class GeminiService {
       Department: ${jobData.department}
       
       CANDIDATES:
-      ${candidates.map((c, i) => `--- CANDIDATE #${i+1} ---\nID: ${c._id?.toString() || c.id}\nName: ${c.name}\nCV TEXT:\n${c.resuméText || c.technicalProfile || "No readable CV data provided."}\n`).join("\n")}
+      ${candidates.map((c, i) => `--- CANDIDATE #${i+1} ---
+ID: ${c._id?.toString() || c.id}
+Name: ${c.firstName && c.lastName ? `${c.firstName} ${c.lastName}` : (c.name || "Candidate Name Not Found")}
+Headline: ${c.headline || c.role || "Technical Professional"}
+Skills: ${c.skills?.length ? JSON.stringify(c.skills) : (c.technicalProfile || "See CV Text")}
+Experience: ${c.workExperience?.length ? JSON.stringify(c.workExperience) : (c.experience || "See CV Text")}
+Education: ${c.education?.length ? JSON.stringify(c.education) : "See CV Text"}
+Projects: ${c.projects?.length ? JSON.stringify(c.projects) : "See CV Text"}
+Certifications: ${c.certifications?.length ? JSON.stringify(c.certifications) : "None listed"}
+CV TEXT:
+${c.resumeText || c.technicalProfile || "No readable CV data provided."}
+`).join("\n")}
       
       INSTRUCTION:
       You MUST return a JSON array of evaluations.

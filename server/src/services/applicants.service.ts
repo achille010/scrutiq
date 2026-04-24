@@ -271,17 +271,23 @@ class ApplicantsService {
       SOURCE_REF: ${source}
       DOCUMENT_CONTENT: ${rawText.substring(0, 10000)}
       
-      RESPOND ONLY WITH VALID JSON:
+      RESPOND ONLY WITH VALID JSON matching this exact structure:
       {
-        "name": "Full Name",
-        "email": "Primary Email Address (EXTREMELY IMPORTANT: Search with all your might for links/icons, but NEVER guess. Return 'No email available' if not found.)",
-        "gender": "Extract GENDER as 'M', 'F', or 'Not stated'. Search for pronouns/mentions, but NEVER guess based on names. If unsure, return 'Not stated'.",
-        "role": "Most relevant title or current role",
-
-
-        "location": "Current City/Country",
-        "experience": "High-level summary of professional tenure",
-        "technicalProfile": "Dense summary of technical stack and expertise"
+        "firstName": "string",
+        "lastName": "string",
+        "email": "string (Search links/icons carefully, return 'No email available' if not found)",
+        "gender": "M | F | Not stated",
+        "headline": "Short professional summary",
+        "bio": "Brief professional biography",
+        "location": "City, Country",
+        "skills": [{"name": "string", "level": "Beginner | Intermediate | Advanced | Expert", "yearsOfExperience": number}],
+        "languages": [{"name": "string", "proficiency": "Basic | Conversational | Fluent | Native"}],
+        "workExperience": [{"company": "string", "role": "string", "startDate": "YYYY-MM", "endDate": "YYYY-MM | Present", "description": "string", "technologies": ["string"], "isCurrent": boolean}],
+        "education": [{"institution": "string", "degree": "string", "fieldOfStudy": "string", "startYear": number, "endYear": number}],
+        "certifications": [{"name": "string", "issuer": "string", "issueDate": "YYYY-MM"}],
+        "projects": [{"name": "string", "description": "string", "technologies": ["string"], "role": "string", "link": "string", "startDate": "YYYY-MM", "endDate": "YYYY-MM"}],
+        "availability": {"status": "Available | Open to Opportunities | Not Available", "type": "Full-time | Part-time | Contract", "startDate": "YYYY-MM-DD"},
+        "socialLinks": {"linkedin": "url", "github": "url", "portfolio": "url"}
       }
     `;
 
@@ -347,12 +353,28 @@ class ApplicantsService {
           }
 
           const applicant = new Applicant({
-            name: data.name || source.replace(/\.[^/.]+$/, ""),
+            // Legacy Support (Populate for backward compatibility)
+            name: data.firstName && data.lastName ? `${data.firstName} ${data.lastName}` : (data.name || source.replace(/\.[^/.]+$/, "")),
             email: email || fallbackEmail || `external-${crypto.randomUUID().substring(0, 8)}@registry.extern`,
-            role: data.role || "Technical Professional",
+            role: data.headline || data.role || "Technical Professional",
             location: data.location || "Remote / Global",
-            experience: data.experience || "Verified Profile",
-            technicalProfile: data.technicalProfile || rawText.substring(0, 3000),
+            experience: data.bio || "Verified Profile",
+            technicalProfile: rawText.substring(0, 5000), // Keep a robust technical context
+            
+            // Talent Profile Specification Fields
+            firstName: data.firstName,
+            lastName: data.lastName,
+            headline: data.headline,
+            bio: data.bio,
+            skills: data.skills || [],
+            languages: data.languages || [],
+            workExperience: data.workExperience || [],
+            education: data.education || [],
+            certifications: data.certifications || [],
+            projects: data.projects || [],
+            availability: data.availability,
+            socialLinks: data.socialLinks,
+
             resumeText: rawText,
             resumeUrl,
             ownerId,
