@@ -260,5 +260,6 @@ export default function ApplicantTable({ source }: ApplicantTableProps) {
         </div>
       </div>
     </div>
+  </div>
   );
 }
