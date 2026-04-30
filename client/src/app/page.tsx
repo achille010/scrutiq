@@ -91,8 +91,8 @@ export default function LandingPage() {
               </span>
             </h1>
             <p className="text-lg md:text-2xl text-scrutiq-muted max-w-3xl mx-auto leading-relaxed font-medium">
-              The only administrative portal that leverages Google Gemini AI to
-              transform your technical recruitment pipeline.
+              An advanced talent analysis platform that streamlines candidate
+              screening and technical assessment for smarter hiring decisions.
             </p>
           </div>
 

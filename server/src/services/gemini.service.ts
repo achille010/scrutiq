@@ -88,18 +88,22 @@ class GeminiService {
       Department: ${jobData.department}
       
       CANDIDATES:
-      ${candidates.map((c, i) => `--- CANDIDATE #${i+1} ---
-ID: ${c._id?.toString() || c.id}
-Name: ${c.firstName && c.lastName ? `${c.firstName} ${c.lastName}` : (c.name || "Candidate Name Not Found")}
-Headline: ${c.headline || c.role || "Technical Professional"}
-Skills: ${c.skills?.length ? JSON.stringify(c.skills) : (c.technicalProfile || "See CV Text")}
-Experience: ${c.workExperience?.length ? JSON.stringify(c.workExperience) : (c.experience || "See CV Text")}
-Education: ${c.education?.length ? JSON.stringify(c.education) : "See CV Text"}
-Projects: ${c.projects?.length ? JSON.stringify(c.projects) : "See CV Text"}
-Certifications: ${c.certifications?.length ? JSON.stringify(c.certifications) : "None listed"}
-CV TEXT:
-${c.resumeText || c.technicalProfile || "No readable CV data provided."}
-`).join("\n")}
+      ${candidates
+        .map(
+          (c, i) => `--- CANDIDATE #${i + 1} ---
+      ID: ${c._id?.toString() || c.id}
+      Name: ${c.firstName && c.lastName ? `${c.firstName} ${c.lastName}` : c.name || "Candidate Name Not Found"}
+      Headline: ${c.headline || c.role || "Technical Professional"}
+      Skills: ${c.skills?.length ? JSON.stringify(c.skills) : c.technicalProfile || "See CV Text"}
+      Experience: ${c.workExperience?.length ? JSON.stringify(c.workExperience) : c.experience || "See CV Text"}
+      Education: ${c.education?.length ? JSON.stringify(c.education) : "See CV Text"}
+      Projects: ${c.projects?.length ? JSON.stringify(c.projects) : "See CV Text"}
+      Certifications: ${c.certifications?.length ? JSON.stringify(c.certifications) : "None listed"}
+      CV TEXT:
+      ${c.resumeText || c.technicalProfile || "No readable CV data provided."}
+      `,
+        )
+        .join("\n")}
       
       INSTRUCTION:
       You MUST return a JSON array of evaluations.
@@ -160,26 +164,40 @@ ${c.resumeText || c.technicalProfile || "No readable CV data provided."}
       return parsedResults;
     } catch (error: any) {
       console.error("[AI SERVICE FAULT]:", error.message || error);
-      
+
       const msg = error.message?.toLowerCase() || "";
-      
+
       if (msg.includes("limit") || msg.includes("quota")) {
-        throw new Error("Our AI partner is currently at full capacity for your account. Please wait a moment or upgrade your screening tokens.");
+        throw new Error(
+          "Our AI partner is currently at full capacity for your account. Please wait a moment or upgrade your screening tokens.",
+        );
       }
-      
-      if (msg.includes("503") || msg.includes("overloaded") || msg.includes("demand")) {
-        throw new Error("The AI brain is experiencing high demand. We tried to retry for you, but it's still busy. Please try again in 1 minute.");
+
+      if (
+        msg.includes("503") ||
+        msg.includes("overloaded") ||
+        msg.includes("demand")
+      ) {
+        throw new Error(
+          "The AI brain is experiencing high demand. We tried to retry for you, but it's still busy. Please try again in 1 minute.",
+        );
       }
 
       if (msg.includes("api key") || msg.includes("invalid")) {
-        throw new Error("Technical setup error: The AI brain key is missing or invalid. Please check your system configuration.");
+        throw new Error(
+          "Technical setup error: The AI brain key is missing or invalid. Please check your system configuration.",
+        );
       }
 
       if (error instanceof SyntaxError) {
-        throw new Error("The AI gave us a response we couldn't read correctly. This sometimes happens with complex resumes. Trying again usually fixes it!");
+        throw new Error(
+          "The AI gave us a response we couldn't read correctly. This sometimes happens with complex resumes. Trying again usually fixes it!",
+        );
       }
 
-      throw new Error("We encountered a small hiccup while talking to the AI. Please try running the screening one more time.");
+      throw new Error(
+        "We encountered a small hiccup while talking to the AI. Please try running the screening one more time.",
+      );
     }
   }
 }
