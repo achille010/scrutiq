@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "@/lib/toast";
 import { motion, AnimatePresence } from "framer-motion";
+import PasswordRequirements from "@/components/auth/PasswordRequirements";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
@@ -291,7 +292,7 @@ const ForgotPasswordPage = () => {
                       <input
                         type={showPassword ? "text" : "password"}
                         required
-                        placeholder="••••••••"
+                        placeholder="Input"
                         value={formData.password}
                         onChange={(e) =>
                           setFormData({ ...formData, password: e.target.value })
@@ -321,7 +322,7 @@ const ForgotPasswordPage = () => {
                       <input
                         type={showConfirmPassword ? "text" : "password"}
                         required
-                        placeholder="••••••••"
+                        placeholder="Confirm"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className="w-full bg-scrutiq-bg border border-scrutiq-border rounded-xl pl-11 pr-12 py-3.5 text-xs font-bold text-scrutiq-dark outline-none focus:border-scrutiq-blue transition-all tracking-[0.3em]"
@@ -341,6 +342,11 @@ const ForgotPasswordPage = () => {
                       </button>
                     </div>
                   </div>
+
+                  <PasswordRequirements
+                    password={formData.password}
+                    confirmPassword={confirmPassword}
+                  />
                 </div>
 
                 <button

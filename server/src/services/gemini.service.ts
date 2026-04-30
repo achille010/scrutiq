@@ -194,7 +194,6 @@ class GeminiService {
           "The AI gave us a response we couldn't read correctly. This sometimes happens with complex resumes. Trying again usually fixes it!",
         );
       }
-
       throw new Error(
         "We encountered a small hiccup while talking to the AI. Please try running the screening one more time.",
       );
