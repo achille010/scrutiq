@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc --ignoreDeprecations 6.0",
+    "build": "tsc",
     "start": "node dist/server.js",
     "lint": "eslint . --ext .ts",
     "migrate": "ts-node src/utils/migrateData.ts"
